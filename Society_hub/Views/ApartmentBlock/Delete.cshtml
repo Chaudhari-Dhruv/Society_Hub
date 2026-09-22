@@ -1,0 +1,30 @@
+﻿@model Society_hub.Models.ApartmentBlock
+
+<h1>Delete Apartment Block</h1>
+
+<p>Are you sure you want to delete this block?</p>
+
+<p>
+    <strong>ID:</strong>
+    @Model.Id
+</p>
+
+<p>
+    <strong>Block Name:</strong>
+    @Model.BlockName
+</p>
+
+<p>
+    <strong>Total Flats:</strong>
+    @Model.TotalFlats
+</p>
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit">Yes, Delete</button>
+
+    <a asp-action="Index">Cancel</a>
+
+</form>

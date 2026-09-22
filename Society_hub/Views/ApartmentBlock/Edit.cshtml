@@ -1,0 +1,27 @@
+﻿@model Society_hub.Models.ApartmentBlock
+
+<h1>Edit Apartment Block</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label>Block Name</label>
+        <input asp-for="BlockName" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Total Flats</label>
+        <input asp-for="TotalFlats" type="number" />
+    </div>
+
+    <br />
+
+    <button type="submit">Update</button>
+
+    <a asp-action="Index">Back</a>
+
+</form>

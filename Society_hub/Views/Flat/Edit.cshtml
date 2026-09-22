@@ -1,0 +1,36 @@
+﻿@model Society_hub.Models.Flat
+
+<h1>Edit Flat</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label>Flat Number</label>
+        <input asp-for="FlatNumber" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Floor Number</label>
+        <input asp-for="FloorNumber" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Is Occupied</label>
+        <input asp-for="IsOccupied" type="checkbox" />
+    </div>
+
+    <br />
+
+    <button type="submit">Save</button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">Back to List</a>

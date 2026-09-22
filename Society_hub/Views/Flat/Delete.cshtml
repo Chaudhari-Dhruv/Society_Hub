@@ -1,0 +1,27 @@
+﻿@model Society_hub.Models.Flat
+
+<h1>Delete Flat</h1>
+
+<h3>Are you sure you want to delete this flat?</h3>
+
+<p>
+    <strong>Flat Number:</strong> @Model.FlatNumber
+</p>
+
+<p>
+    <strong>Floor Number:</strong> @Model.FloorNumber
+</p>
+
+<p>
+    <strong>Occupied:</strong> @Model.IsOccupied
+</p>
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <button type="submit">Delete</button>
+
+    <a asp-action="Index">Cancel</a>
+
+</form>

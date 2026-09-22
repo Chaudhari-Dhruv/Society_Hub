@@ -1,0 +1,44 @@
+﻿@model Society_hub.Models.ApartmentBlock
+
+<h1>Apartment Block Details</h1>
+
+<p>
+    <strong>ID:</strong>
+    @Model.Id
+</p>
+
+<p>
+    <strong>Block Name:</strong>
+    @Model.BlockName
+</p>
+
+<p>
+    <strong>Total Flats:</strong>
+    @Model.TotalFlats
+</p>
+
+<h3>Flats</h3>
+
+@if (Model.Flats != null && Model.Flats.Any())
+{
+    <ul>
+        @foreach (var flat in Model.Flats)
+        {
+            <li>
+                Flat: @flat.FlatNumber
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No flats added yet.</p>
+}
+
+<br />
+
+<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+
+|
+
+<a asp-action="Index">Back to List</a>

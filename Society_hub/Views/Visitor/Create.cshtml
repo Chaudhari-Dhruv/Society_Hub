@@ -1,0 +1,60 @@
+﻿@model Society_hub.Models.Visitor
+
+<h1>Register Visitor</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Visitor Name</label>
+        <input asp-for="VisitorName" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Phone</label>
+        <input asp-for="Phone" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Purpose</label>
+        <input asp-for="Purpose" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Visit Date</label>
+        <input asp-for="VisitDate" type="date" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Resident</label>
+
+        <select asp-for="ResidentId">
+
+            <option value="">-- Select Resident --</option>
+
+            @foreach (var resident in ViewBag.Residents)
+            {
+                <option value="@resident.Id">
+                    @resident.FullName - @resident.Flat?.FlatNumber
+                </option>
+            }
+
+        </select>
+    </div>
+
+    <br />
+
+    <button type="submit">Register Visitor</button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">Back to List</a>
