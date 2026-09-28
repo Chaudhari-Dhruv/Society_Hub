@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Society_hub.Models.Complaint>
+
+<h1>Complaint List</h1>
+
+<p>
+    <a asp-action="Create">Submit New Complaint</a>
+</p>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Resident</th>
+            <th>Flat</th>
+            <th>Status</th>
+            <th>Created Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.Category</td>
+                <td>@item.Resident?.FullName</td>
+                <td>@item.Resident?.Flat?.FlatNumber</td>
+                <td>@item.Status</td>
+                <td>@item.CreatedDate</td>
+
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id">
+                        Details
+                    </a>
+                    |
+                    <a asp-action="Edit" asp-route-id="@item.Id">
+                        Edit
+                    </a>
+                    |
+                    <a asp-action="Delete" asp-route-id="@item.Id">
+                        Delete
+                    </a>
+
+                    <br />
+                    <br />
+
+                    @if (item.Status == "Pending")
+                    {
+                        <form asp-action="StartWork"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              style="display:inline">
+
+                            <button type="submit">
+                                Start Work
+                            </button>
+
+                        </form>
+                    }
+                    else if (item.Status == "In Progress")
+                    {
+                        <form asp-action="Resolve"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              style="display:inline">
+
+                            <button type="submit">
+                                Resolve
+                            </button>
+
+                        </form>
+                    }
+                    else if (item.Status == "Resolved")
+                    {
+                        <span>Completed</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

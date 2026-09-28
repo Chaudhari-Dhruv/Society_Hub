@@ -136,5 +136,49 @@ namespace Society_hub.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        // POST: Visitor/CheckIn/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckIn(int id)
+        {
+            var visitor = await _context.Visitors.FindAsync(id);
+
+            if (visitor == null)
+                return NotFound();
+
+            // Only expected visitors can check in
+            if (visitor.Status == "Expected")
+            {
+                visitor.Status = "Checked-In";
+                visitor.EntryTime = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+
+        // POST: Visitor/CheckOut/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CheckOut(int id)
+        {
+            var visitor = await _context.Visitors.FindAsync(id);
+
+            if (visitor == null)
+                return NotFound();
+
+            // Only checked-in visitors can check out
+            if (visitor.Status == "Checked-In")
+            {
+                visitor.Status = "Checked-Out";
+                visitor.ExitTime = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

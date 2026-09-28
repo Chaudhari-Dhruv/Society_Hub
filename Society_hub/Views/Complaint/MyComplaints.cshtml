@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Society_hub.Models.Complaint>
+
+<h1>My Complaints</h1>
+
+@if (!Model.Any())
+{
+    <p>You have not submitted any complaints.</p>
+}
+else
+{
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Created Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var complaint in Model)
+            {
+                <tr>
+
+                    <td>
+                        @complaint.Title
+                    </td>
+
+                    <td>
+                        @complaint.Category
+                    </td>
+
+                    <td>
+                        @complaint.Description
+                    </td>
+
+                    <td>
+                        @complaint.Status
+                    </td>
+
+                    <td>
+                        @complaint.CreatedDate
+                    </td>
+
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@complaint.Id">
+                            Details
+                        </a>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
