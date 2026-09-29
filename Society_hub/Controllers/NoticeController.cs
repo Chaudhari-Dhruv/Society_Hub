@@ -118,5 +118,14 @@ namespace Society_hub.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+        // GET: Notice/ResidentNotices
+        public async Task<IActionResult> ResidentNotices()
+        {
+            var notices = await _context.Notices
+                .OrderByDescending(n => n.PublishedDate)
+                .ToListAsync();
+
+            return View(notices);
+        }
     }
 }

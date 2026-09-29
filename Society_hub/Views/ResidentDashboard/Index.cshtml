@@ -1,0 +1,83 @@
+﻿@model Society_hub.Models.ViewModels.ResidentDashboardViewModel
+
+<h1>Resident Dashboard</h1>
+
+<hr />
+
+<h2>Profile Summary</h2>
+
+<p>
+    <strong>Name:</strong>
+    @Model.Resident?.FullName
+</p>
+
+<p>
+    <strong>Email:</strong>
+    @Model.Resident?.Email
+</p>
+
+<p>
+    <strong>Phone:</strong>
+    @Model.Resident?.Phone
+</p>
+
+<p>
+    <strong>Flat:</strong>
+    @Model.Resident?.Flat?.FlatNumber
+</p>
+
+<p>
+    <strong>Apartment Block:</strong>
+    @Model.Resident?.Flat?.ApartmentBlock?.BlockName
+</p>
+
+<hr />
+
+<h2>Complaints</h2>
+
+<p>
+    Total Complaints:
+    <strong>@Model.ComplaintCount</strong>
+</p>
+
+<p>
+    Pending Complaints:
+    <strong>@Model.PendingComplaintCount</strong>
+</p>
+
+<hr />
+
+<h2>Visitors</h2>
+
+<p>
+    Upcoming Visitors:
+    <strong>@Model.UpcomingVisitorCount</strong>
+</p>
+
+<hr />
+
+<h2>Notices</h2>
+
+<p>
+    Available Notices:
+    <strong>@Model.NoticeCount</strong>
+</p>
+
+<a asp-controller="Notice"
+   asp-action="ResidentNotices">
+    View Notices
+</a>
+
+<hr />
+
+<h2>Events</h2>
+
+<p>
+    Upcoming Events:
+    <strong>@Model.UpcomingEventCount</strong>
+</p>
+
+<a asp-controller="Event"
+   asp-action="ResidentEvents">
+    View Events
+</a>

@@ -1,0 +1,49 @@
+﻿@model Society_hub.Models.Event
+
+<h1>Edit Event</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
+    <input type="hidden" asp-for="CreatedDate" />
+
+    <div>
+        <label>Title</label>
+        <input asp-for="Title" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Description</label>
+        <textarea asp-for="Description"></textarea>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Location</label>
+        <input asp-for="Location" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Event Date</label>
+        <input asp-for="EventDate" type="datetime-local" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Save Changes
+    </button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">
+    Back to Events
+</a>

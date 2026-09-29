@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Society_hub.Models.Event>
+
+<h1>Upcoming Society Events</h1>
+
+@if (!Model.Any())
+{
+    <p>No upcoming events available.</p>
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+
+            <h2>@item.Title</h2>
+
+            <p>
+                <strong>Description:</strong>
+                @item.Description
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                @item.Location
+            </p>
+
+            <p>
+                <strong>Date:</strong>
+                @item.EventDate
+            </p>
+
+            <a asp-action="Details"
+               asp-route-id="@item.Id">
+                View Event
+            </a>
+
+        </div>
+    }
+}

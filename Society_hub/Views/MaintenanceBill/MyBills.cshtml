@@ -1,0 +1,72 @@
+﻿@model IEnumerable<Society_hub.Models.MaintenanceBill>
+
+<h1>My Maintenance Bills</h1>
+
+@if (!Model.Any())
+{
+    <p>You don't have any maintenance bills.</p>
+}
+else
+{
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>Bill ID</th>
+                <th>Billing Month</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Payment Date</th>
+                <th>Receipt</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var bill in Model)
+            {
+                <tr>
+
+                    <td>@bill.Id</td>
+
+                    <td>
+                        @bill.BillingMonth.ToString("MMMM yyyy")
+                    </td>
+
+                    <td>
+                        ₹@bill.Amount
+                    </td>
+
+                    <td>
+                        @bill.DueDate.ToString("dd-MM-yyyy")
+                    </td>
+
+                    <td>
+                        @bill.PaymentStatus
+                    </td>
+
+                    <td>
+                        @(bill.PaymentDate?.ToString("dd-MM-yyyy")
+                            ?? "Not Paid")
+                    </td>
+
+                    <td>
+                        @(bill.ReceiptNumber ?? "Not Available")
+                    </td>
+
+                    <td>
+                        <a asp-action="Details"
+                           asp-route-id="@bill.Id">
+                            View Details
+                        </a>
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}

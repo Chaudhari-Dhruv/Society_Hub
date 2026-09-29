@@ -12,9 +12,9 @@
 
         public DateTime EventDate { get; set; }
 
-        public int MaximumParticipants { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        public ICollection<EventRegistration> Registrations { get; set; } =
-            new List<EventRegistration>();
+        public ICollection<EventRegistration> EventRegistrations { get; set; }
+            = new List<EventRegistration>();
     }
 }

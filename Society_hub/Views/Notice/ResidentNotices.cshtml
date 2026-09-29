@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Society_hub.Models.Notice>
+
+<h1>Society Notices</h1>
+
+@if (!Model.Any())
+{
+    <p>No notices are available.</p>
+}
+else
+{
+    foreach (var notice in Model)
+    {
+        <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
+
+            <h2>@notice.Title</h2>
+
+            <p>
+                @notice.Content
+            </p>
+
+            <p>
+                <strong>Published:</strong>
+                @notice.PublishedDate
+            </p>
+
+            <a asp-action="Details"
+               asp-route-id="@notice.Id">
+                View Details
+            </a>
+
+        </div>
+    }
+}

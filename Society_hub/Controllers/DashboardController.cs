@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Society_hub.Data;
-using System.Linq;
+using Society_hub.Models.ViewModels;
 
 namespace Society_hub.Controllers
 {
@@ -13,30 +14,41 @@ namespace Society_hub.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            ViewBag.TotalResidents = _context.Residents.Count();
+            var today = DateTime.Today;
+            var tomorrow = today.AddDays(1);
 
-            ViewBag.TotalFlats = _context.Flats.Count();
+            var model = new AdminDashboardViewModel
+            {
+                TotalResidents = await _context.Residents.CountAsync(),
 
-            ViewBag.OccupiedFlats =
-                _context.Flats.Count(f => f.IsOccupied);
+                TotalFlats = await _context.Flats.CountAsync(),
 
-            ViewBag.VacantFlats =
-                _context.Flats.Count(f => !f.IsOccupied);
+                OccupiedFlats = await _context.Residents
+                    .Select(r => r.FlatId)
+                    .Distinct()
+                    .CountAsync(),
 
-            ViewBag.PendingComplaints =
-                _context.Complaints.Count(c => c.Status == "Pending");
+                VacantFlats = await _context.Flats.CountAsync()
+                    - await _context.Residents
+                        .Select(r => r.FlatId)
+                        .Distinct()
+                        .CountAsync(),
 
-            ViewBag.TodayVisitors =
-                _context.Visitors.Count(v =>
-                    v.VisitDate.Date == DateTime.Today);
+                PendingComplaints = await _context.Complaints
+                    .CountAsync(c => c.Status == "Pending"),
 
-            ViewBag.UpcomingEvents =
-                _context.Events.Count(e =>
-                    e.EventDate >= DateTime.Now);
+                TodaysVisitors = await _context.Visitors
+                    .CountAsync(v =>
+                        v.VisitDate >= today &&
+                        v.VisitDate < tomorrow),
 
-            return View();
+                UpcomingEvents = await _context.Events
+                    .CountAsync(e => e.EventDate >= today)
+            };
+
+            return View(model);
         }
     }
 }

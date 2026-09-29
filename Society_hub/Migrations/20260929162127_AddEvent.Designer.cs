@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Society_hub.Data;
 
@@ -11,9 +12,11 @@ using Society_hub.Data;
 namespace Society_hub.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260929162127_AddEvent")]
+    partial class AddEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -175,27 +178,22 @@ namespace Society_hub.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("BillingMonth")
+                    b.Property<DateTime>("BillDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("BillNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiptNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ResidentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -429,7 +427,7 @@ namespace Society_hub.Migrations
             modelBuilder.Entity("Society_hub.Models.Payment", b =>
                 {
                     b.HasOne("Society_hub.Models.MaintenanceBill", "MaintenanceBill")
-                        .WithMany()
+                        .WithMany("Payments")
                         .HasForeignKey("MaintenanceBillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -472,6 +470,11 @@ namespace Society_hub.Migrations
             modelBuilder.Entity("Society_hub.Models.Flat", b =>
                 {
                     b.Navigation("Residents");
+                });
+
+            modelBuilder.Entity("Society_hub.Models.MaintenanceBill", b =>
+                {
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("Society_hub.Models.Resident", b =>

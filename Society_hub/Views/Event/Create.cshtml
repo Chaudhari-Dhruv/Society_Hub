@@ -1,0 +1,49 @@
+﻿@model Society_hub.Models.Event
+
+<h1>Create Event</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Title</label>
+        <input asp-for="Title" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Description</label>
+        <textarea asp-for="Description"></textarea>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Location</label>
+        <input asp-for="Location" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Event Date</label>
+        <input asp-for="EventDate" type="datetime-local" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Create Event
+    </button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">
+    Back to Events
+</a>@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
