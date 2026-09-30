@@ -1,0 +1,112 @@
+﻿@using Society_hub.Models
+
+@{
+    var expectedVisitors = ViewBag.ExpectedVisitors as List<Visitor>;
+    var checkedInVisitors = ViewBag.CheckedInVisitors as List<Visitor>;
+}
+
+<h1>Security Dashboard</h1>
+
+<hr />
+
+<h2>Expected Visitors</h2>
+
+@if (expectedVisitors == null || !expectedVisitors.Any())
+{
+    <p>No expected visitors right now.</p>
+}
+else
+{
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Visitor</th>
+                <th>Phone</th>
+                <th>Resident</th>
+                <th>Flat</th>
+                <th>Visit Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var visitor in expectedVisitors)
+            {
+                <tr>
+                    <td>@visitor.VisitorName</td>
+                    <td>@visitor.Phone</td>
+                    <td>@visitor.Resident?.FullName</td>
+                    <td>@visitor.Resident?.Flat?.FlatNumber</td>
+                    <td>@visitor.VisitDate</td>
+                    <td>@visitor.Status</td>
+
+                    <td>
+                        <form asp-controller="Visitor"
+                              asp-action="CheckIn"
+                              asp-route-id="@visitor.Id"
+                              method="post">
+
+                            <button type="submit">
+                                Check In
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<h2>Checked-In Visitors</h2>
+
+@if (checkedInVisitors == null || !checkedInVisitors.Any())
+{
+    <p>No visitors are currently inside.</p>
+}
+else
+{
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Visitor</th>
+                <th>Phone</th>
+                <th>Resident</th>
+                <th>Flat</th>
+                <th>Entry Time</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var visitor in checkedInVisitors)
+            {
+                <tr>
+                    <td>@visitor.VisitorName</td>
+                    <td>@visitor.Phone</td>
+                    <td>@visitor.Resident?.FullName</td>
+                    <td>@visitor.Resident?.Flat?.FlatNumber</td>
+                    <td>@visitor.EntryTime</td>
+                    <td>@visitor.Status</td>
+
+                    <td>
+                        <form asp-controller="Visitor"
+                              asp-action="CheckOut"
+                              asp-route-id="@visitor.Id"
+                              method="post">
+
+                            <button type="submit">
+                                Check Out
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

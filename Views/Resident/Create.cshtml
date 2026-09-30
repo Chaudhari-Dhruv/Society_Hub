@@ -1,0 +1,60 @@
+﻿@model Society_hub.Models.Resident
+
+<h1>Create Resident</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Full Name</label>
+        <input asp-for="FullName" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Phone</label>
+        <input asp-for="Phone" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Family Members</label>
+        <input asp-for="FamilyMembers" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Flat</label>
+
+        <select asp-for="FlatId">
+
+            <option value="">-- Select Flat --</option>
+
+            @foreach (var flat in ViewBag.Flats)
+            {
+                <option value="@flat.Id">
+                    @flat.FlatNumber - @flat.ApartmentBlock?.BlockName
+                </option>
+            }
+
+        </select>
+    </div>
+
+    <br />
+
+    <button type="submit">Create</button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">Back to List</a>

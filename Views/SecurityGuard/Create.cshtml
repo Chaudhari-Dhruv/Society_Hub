@@ -1,0 +1,53 @@
+﻿@model Society_hub.Models.SecurityGuard
+
+<h1>Add Security Guard</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Full Name</label>
+        <input asp-for="FullName" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Phone</label>
+        <input asp-for="Phone" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Email</label>
+        <input asp-for="Email" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Shift</label>
+        <select asp-for="Shift">
+            <option value="">-- Select Shift --</option>
+            <option value="Morning">Morning</option>
+            <option value="Evening">Evening</option>
+            <option value="Night">Night</option>
+        </select>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Active</label>
+        <input asp-for="IsActive" type="checkbox" />
+    </div>
+
+    <br />
+
+    <button type="submit">Create</button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">Back to List</a>

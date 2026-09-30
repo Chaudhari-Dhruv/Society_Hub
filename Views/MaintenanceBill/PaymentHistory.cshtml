@@ -1,0 +1,57 @@
+﻿@model IEnumerable<Society_hub.Models.MaintenanceBill>
+
+<h1>Payment History</h1>
+
+@if (!Model.Any())
+{
+    <p>No payment history available.</p>
+}
+else
+{
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>Bill ID</th>
+                <th>Billing Month</th>
+                <th>Amount</th>
+                <th>Payment Date</th>
+                <th>Receipt Number</th>
+                <th>Receipt</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var payment in Model)
+            {
+                <tr>
+                    <td>@payment.Id</td>
+
+                    <td>
+                        @payment.BillingMonth.ToString("MMMM yyyy")
+                    </td>
+
+                    <td>
+                        ₹@payment.Amount
+                    </td>
+
+                    <td>
+                        @payment.PaymentDate?.ToString("dd-MM-yyyy")
+                    </td>
+
+                    <td>
+                        @payment.ReceiptNumber
+                    </td>
+
+                    <td>
+                        <a asp-action="Receipt"
+                           asp-route-id="@payment.Id">
+                            View Receipt
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}

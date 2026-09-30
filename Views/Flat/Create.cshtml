@@ -1,0 +1,51 @@
+﻿@model Society_hub.Models.Flat
+
+<h1>Create Flat</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Flat Number</label>
+        <input asp-for="FlatNumber" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Floor Number</label>
+        <input asp-for="FloorNumber" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Is Occupied</label>
+        <input asp-for="IsOccupied" type="checkbox" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Apartment Block</label>
+
+        <select asp-for="ApartmentBlockId">
+            <option value="">-- Select Block --</option>
+
+            @foreach (var block in ViewBag.ApartmentBlocks)
+            {
+                <option value="@block.Id">
+                    @block.BlockName
+                </option>
+            }
+        </select>
+    </div>
+
+    <br />
+
+    <button type="submit">Create</button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">Back to List</a>

@@ -1,0 +1,35 @@
+﻿@model Society_hub.Models.Resident
+
+<h1>Resident Details</h1>
+
+<p>
+    <strong>Id:</strong> @Model.Id
+</p>
+
+<p>
+    <strong>Full Name:</strong> @Model.FullName
+</p>
+
+<p>
+    <strong>Email:</strong> @Model.Email
+</p>
+
+<p>
+    <strong>Phone:</strong> @Model.Phone
+</p>
+
+<p>
+    <strong>Family Members:</strong> @Model.FamilyMembers
+</p>
+
+<p>
+    <strong>Flat:</strong> @Model.Flat?.FlatNumber
+</p>
+
+<p>
+    <strong>Apartment Block:</strong>
+    @Model.Flat?.ApartmentBlock?.BlockName
+</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+<a asp-action="Index">Back to List</a>

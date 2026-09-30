@@ -1,0 +1,22 @@
+﻿@model Society_hub.Models.Flat
+
+<h1>Flat Details</h1>
+
+<p>
+    <strong>Id:</strong> @Model.Id
+</p>
+
+<p>
+    <strong>Flat Number:</strong> @Model.FlatNumber
+</p>
+
+<p>
+    <strong>Floor Number:</strong> @Model.FloorNumber
+</p>
+
+<p>
+    <strong>Occupied:</strong> @Model.IsOccupied
+</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+<a asp-action="Index">Back to List</a>

@@ -1,0 +1,41 @@
+﻿@model Society_hub.Models.Notice
+
+<h1>Notice Details</h1>
+
+<p>
+    <strong>Id:</strong>
+    @Model.Id
+</p>
+
+<p>
+    <strong>Title:</strong>
+    @Model.Title
+</p>
+
+<p>
+    <strong>Content:</strong>
+    @Model.Content
+</p>
+
+<p>
+    <strong>Created Date:</strong>
+    @Model.CreatedDate
+</p>
+
+<p>
+    <strong>Published Date:</strong>
+    @Model.PublishedDate
+</p>
+
+<br />
+
+<a asp-action="Edit"
+   asp-route-id="@Model.Id">
+    Edit
+</a>
+
+|
+
+<a asp-action="Index">
+    Back to List
+</a>

@@ -1,0 +1,55 @@
+﻿@model Society_hub.Models.MaintenanceBill
+
+<h1>Create Maintenance Bill</h1>
+
+<form asp-action="Create" method="post">
+
+    <div>
+        <label>Resident</label>
+
+        <select asp-for="ResidentId">
+            <option value="">-- Select Resident --</option>
+
+            @foreach (var resident in ViewBag.Residents)
+            {
+                <option value="@resident.Id">
+                    @resident.FullName
+                </option>
+            }
+        </select>
+    </div>
+
+    <br />
+
+    <div>
+        <label>Amount</label>
+        <input asp-for="Amount" type="number" step="0.01" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Billing Month</label>
+        <input asp-for="BillingMonth" type="date" />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Due Date</label>
+        <input asp-for="DueDate" type="date" />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Create Bill
+    </button>
+
+</form>
+
+<br />
+
+<a asp-action="Index">
+    Back to Bills
+</a>

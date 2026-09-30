@@ -1,0 +1,41 @@
+﻿@model Society_hub.Models.Event
+
+<h1>Register for Event</h1>
+
+<h3>@Model.Title</h3>
+
+<p>
+    <strong>Description:</strong>
+    @Model.Description
+</p>
+
+<p>
+    <strong>Location:</strong>
+    @Model.Location
+</p>
+
+<p>
+    <strong>Event Date:</strong>
+    @Model.EventDate
+</p>
+
+<hr />
+
+<p>Are you sure you want to register for this event?</p>
+
+<form asp-action="RegisterConfirmed"
+      asp-route-id="@Model.Id"
+      method="post">
+
+    @Html.AntiForgeryToken()
+
+    <button type="submit">
+        Confirm Registration
+    </button>
+
+    <a asp-action="Details"
+       asp-route-id="@Model.Id">
+        Cancel
+    </a>
+
+</form>

@@ -1,0 +1,76 @@
+﻿@model Society_hub.Models.Event
+
+<h1>Event Registrations</h1>
+
+<h2>@Model.Title</h2>
+
+<p>
+    <strong>Event Date:</strong>
+    @Model.EventDate
+</p>
+
+<p>
+    <strong>Location:</strong>
+    @Model.Location
+</p>
+
+<hr />
+
+<h3>Registered Residents</h3>
+
+@if (Model.EventRegistrations != null &&
+     Model.EventRegistrations.Any())
+{
+    <table border="1" cellpadding="10">
+
+        <thead>
+            <tr>
+                <th>Registration Id</th>
+                <th>Resident Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Registration Date</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var registration in Model.EventRegistrations)
+            {
+                <tr>
+                    <td>@registration.Id</td>
+
+                    <td>
+                        @registration.Resident?.FullName
+                    </td>
+
+                    <td>
+                        @registration.Resident?.Email
+                    </td>
+
+                    <td>
+                        @registration.Resident?.Phone
+                    </td>
+
+                    <td>
+                        @registration.RegistrationDate
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+else
+{
+    <p>No residents have registered for this event yet.</p>
+}
+
+<br />
+
+<a asp-action="Index">
+    Back to Events
+</a>@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

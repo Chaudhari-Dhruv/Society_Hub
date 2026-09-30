@@ -1,0 +1,56 @@
+﻿@model Society_hub.Models.MaintenanceBill
+
+<h1>Maintenance Bill Details</h1>
+
+<p>
+    <strong>Bill ID:</strong>
+    @Model.Id
+</p>
+
+<p>
+    <strong>Resident:</strong>
+    @Model.Resident?.FullName
+</p>
+
+<p>
+    <strong>Amount:</strong>
+    ₹@Model.Amount
+</p>
+
+<p>
+    <strong>Billing Month:</strong>
+    @Model.BillingMonth.ToString("MMMM yyyy")
+</p>
+
+<p>
+    <strong>Due Date:</strong>
+    @Model.DueDate.ToString("dd-MM-yyyy")
+</p>
+
+<p>
+    <strong>Payment Status:</strong>
+    @Model.PaymentStatus
+</p>
+
+<p>
+    <strong>Payment Date:</strong>
+    @(Model.PaymentDate?.ToString("dd-MM-yyyy") ?? "Not Paid")
+</p>
+
+<p>
+    <strong>Receipt Number:</strong>
+    @(Model.ReceiptNumber ?? "Not Generated")
+</p>
+
+<br />
+
+<a asp-action="Edit"
+   asp-route-id="@Model.Id">
+    Edit
+</a>
+
+|
+
+<a asp-action="Index">
+    Back to Bills
+</a>

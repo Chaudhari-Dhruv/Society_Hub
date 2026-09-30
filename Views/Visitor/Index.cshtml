@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Society_hub.Models.Visitor>
+
+<h1>Visitor List</h1>
+
+<p>
+    <a asp-action="Create">Register New Visitor</a>
+</p>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Visitor Name</th>
+            <th>Phone</th>
+            <th>Purpose</th>
+            <th>Visit Date</th>
+            <th>Status</th>
+            <th>Entry Time</th>
+            <th>Exit Time</th>
+            <th>Resident</th>
+            <th>Flat</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.VisitorName</td>
+                <td>@item.Phone</td>
+                <td>@item.Purpose</td>
+                <td>@item.VisitDate.ToShortDateString()</td>
+                <td>@item.Status</td>
+                <td>@item.EntryTime</td>
+                <td>@item.ExitTime</td>
+                <td>@item.Resident?.FullName</td>
+                <td>@item.Resident?.Flat?.FlatNumber</td>
+
+                <td>
+
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                    @if (item.Status == "Expected")
+                    {
+                        <form asp-action="CheckIn"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              style="display:inline;">
+
+                            <button type="submit">Check In</button>
+
+                        </form>
+                    }
+
+                    @if (item.Status == "Checked-In")
+                    {
+                        <form asp-action="CheckOut"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              style="display:inline;">
+
+                            <button type="submit">Check Out</button>
+
+                        </form>
+                    }
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

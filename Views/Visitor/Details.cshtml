@@ -1,0 +1,46 @@
+﻿@model Society_hub.Models.Visitor
+
+<h1>Visitor Details</h1>
+
+<p>
+    <strong>Id:</strong> @Model.Id
+</p>
+
+<p>
+    <strong>Visitor Name:</strong> @Model.VisitorName
+</p>
+
+<p>
+    <strong>Phone:</strong> @Model.Phone
+</p>
+
+<p>
+    <strong>Purpose:</strong> @Model.Purpose
+</p>
+
+<p>
+    <strong>Visit Date:</strong> @Model.VisitDate.ToShortDateString()
+</p>
+
+<p>
+    <strong>Status:</strong> @Model.Status
+</p>
+
+<p>
+    <strong>Resident:</strong> @Model.Resident?.FullName
+</p>
+
+<p>
+    <strong>Flat:</strong> @Model.Resident?.Flat?.FlatNumber
+</p>
+
+<p>
+    <strong>Entry Time:</strong> @Model.EntryTime
+</p>
+
+<p>
+    <strong>Exit Time:</strong> @Model.ExitTime
+</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+<a asp-action="Index">Back to List</a>

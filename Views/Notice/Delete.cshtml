@@ -1,0 +1,35 @@
+﻿@model Society_hub.Models.Notice
+
+<h1>Delete Notice</h1>
+
+<h3>Are you sure you want to delete this notice?</h3>
+
+<p>
+    <strong>Title:</strong>
+    @Model.Title
+</p>
+
+<p>
+    <strong>Content:</strong>
+    @Model.Content
+</p>
+
+<p>
+    <strong>Published Date:</strong>
+    @Model.PublishedDate
+</p>
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden"
+           asp-for="Id" />
+
+    <button type="submit">
+        Delete
+    </button>
+
+    <a asp-action="Index">
+        Cancel
+    </a>
+
+</form>

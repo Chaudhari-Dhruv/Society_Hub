@@ -1,0 +1,30 @@
+﻿@model Society_hub.Models.SecurityGuard
+
+<h1>Security Guard Details</h1>
+
+<p>
+    <strong>Id:</strong> @Model.Id
+</p>
+
+<p>
+    <strong>Full Name:</strong> @Model.FullName
+</p>
+
+<p>
+    <strong>Phone:</strong> @Model.Phone
+</p>
+
+<p>
+    <strong>Email:</strong> @Model.Email
+</p>
+
+<p>
+    <strong>Shift:</strong> @Model.Shift
+</p>
+
+<p>
+    <strong>Active:</strong> @(Model.IsActive ? "Yes" : "No")
+</p>
+
+<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+<a asp-action="Index">Back to List</a>

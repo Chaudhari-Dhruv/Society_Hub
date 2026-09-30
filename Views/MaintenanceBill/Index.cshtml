@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Society_hub.Models.MaintenanceBill>
+
+<h1>Maintenance Bills</h1>
+
+<p>
+    <a asp-action="Create">Create New Bill</a>
+</p>
+
+<table border="1" cellpadding="10">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Resident</th>
+            <th>Amount</th>
+            <th>Billing Month</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Payment Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+
+                <td>
+                    @item.Resident?.FullName
+                </td>
+
+                <td>
+                    ₹@item.Amount
+                </td>
+
+                <td>
+                    @item.BillingMonth.ToString("MMMM yyyy")
+                </td>
+
+                <td>
+                    @item.DueDate.ToString("dd-MM-yyyy")
+                </td>
+
+                <td>
+                    @item.PaymentStatus
+                </td>
+
+                <td>
+                    @(item.PaymentDate?.ToString("dd-MM-yyyy") ?? "Not Paid")
+                </td>
+
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@item.Id">
+                        Details
+                    </a>
+
+                    |
+
+                    <a asp-action="Edit"
+                       asp-route-id="@item.Id">
+                        Edit
+                    </a>
+
+                    |
+
+                    <a asp-action="Delete"
+                       asp-route-id="@item.Id">
+                        Delete
+                    </a>
+
+                    @if (item.PaymentStatus != "Paid")
+                    {
+                        <form asp-action="MarkAsPaid"
+                              asp-route-id="@item.Id"
+                              method="post"
+                              style="display:inline;">
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="paymentDate"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+                            <input type="hidden"
+                                   name="receiptNumber"
+                                   value="REC-@item.Id-@DateTime.Now.ToString("yyyyMMddHHmmss")" />
+
+                            <button type="submit">
+                                Mark as Paid
+                            </button>
+
+                        </form>
+                    }
+                    else
+                    {
+                        <span>Paid</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
