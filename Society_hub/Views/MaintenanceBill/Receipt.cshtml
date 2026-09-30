@@ -1,0 +1,54 @@
+﻿@model Society_hub.Models.MaintenanceBill
+
+<h1>Payment Receipt</h1>
+
+<hr />
+
+<h2>SocietyHub</h2>
+
+<p>
+    <strong>Receipt Number:</strong>
+    @Model.ReceiptNumber
+</p>
+
+<p>
+    <strong>Resident:</strong>
+    @Model.Resident?.FullName
+</p>
+
+<p>
+    <strong>Billing Month:</strong>
+    @Model.BillingMonth.ToString("MMMM yyyy")
+</p>
+
+<p>
+    <strong>Amount Paid:</strong>
+    ₹@Model.Amount
+</p>
+
+<p>
+    <strong>Payment Date:</strong>
+    @Model.PaymentDate?.ToString("dd-MM-yyyy")
+</p>
+
+<p>
+    <strong>Payment Status:</strong>
+    @Model.PaymentStatus
+</p>
+
+<hr />
+
+<p>
+    This receipt confirms that the maintenance bill has been paid.
+</p>
+
+<button onclick="window.print()">
+    Print Receipt
+</button>
+
+<br />
+<br />
+
+<a asp-action="PaymentHistory">
+    Back to Payment History
+</a>

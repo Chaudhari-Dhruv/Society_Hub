@@ -176,5 +176,41 @@ namespace Society_hub.Controllers
 
             return View(bills);
         }
+
+        // GET: MaintenanceBill/PaymentHistory
+        public async Task<IActionResult> PaymentHistory()
+        {
+            // Temporary resident ID for testing
+            int residentId = 1;
+
+            var payments = await _context.MaintenanceBills
+                .Include(b => b.Resident)
+                .Where(b =>
+                    b.ResidentId == residentId &&
+                    b.PaymentStatus == "Paid")
+                .OrderByDescending(b => b.PaymentDate)
+                .ToListAsync();
+
+            return View(payments);
+        }
+
+        // GET: MaintenanceBill/Receipt/5
+        public async Task<IActionResult> Receipt(int id)
+        {
+            // Temporary resident ID for testing
+            int residentId = 1;
+
+            var bill = await _context.MaintenanceBills
+                .Include(b => b.Resident)
+                .FirstOrDefaultAsync(b =>
+                    b.Id == id &&
+                    b.ResidentId == residentId &&
+                    b.PaymentStatus == "Paid");
+
+            if (bill == null)
+                return NotFound();
+
+            return View(bill);
+        }
     }
 }
