@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>Register</h1>
+
+<form asp-action="Register" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="All"></div>
+
+    <div>
+        <label>Full Name</label>
+        <input type="text"
+               name="fullName"
+               required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Email</label>
+        <input type="email"
+               name="email"
+               required />
+    </div>
+
+    <br />
+
+    <div>
+        <label>Password</label>
+        <input type="password"
+               name="password"
+               required />
+    </div>
+
+    <br />
+
+    <button type="submit">
+        Register
+    </button>
+
+</form>
+
+<br />
+
+<p>
+    Already have an account?
+    <a asp-action="Login">Login here</a>
+</p>

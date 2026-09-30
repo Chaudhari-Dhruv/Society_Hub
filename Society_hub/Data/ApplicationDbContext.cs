@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Society_hub.Models;
 
 namespace Society_hub.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(
             DbContextOptions<ApplicationDbContext> options)
@@ -18,7 +19,7 @@ namespace Society_hub.Data
 
         public DbSet<Resident> Residents { get; set; }
 
-        public DbSet<Visitor> Visitors { get; set; } 
+        public DbSet<Visitor> Visitors { get; set; }
 
         public DbSet<Complaint> Complaints { get; set; }
 
@@ -31,6 +32,7 @@ namespace Society_hub.Data
         public DbSet<Event> Events { get; set; }
 
         public DbSet<EventRegistration> EventRegistrations { get; set; }
+
         public DbSet<SecurityGuard> SecurityGuards { get; set; }
     }
 }
