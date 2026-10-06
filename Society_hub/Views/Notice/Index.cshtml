@@ -1,64 +1,103 @@
-﻿@model IEnumerable<Society_hub.Models.Notice>
+@model IEnumerable<Society_hub.Models.Notice>
 
-<h1>Notice Board</h1>
+@{
+    ViewData["Title"] = "Notice Board";
+}
 
-<p>
-    <a asp-action="Create">Create New Notice</a>
-</p>
+<div class="container-fluid py-3">
 
-<table border="1" cellpadding="10">
-
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Content</th>
-            <th>Created Date</th>
-            <th>Published Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-
-        @foreach (var item in Model)
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Notice Board</h1>
+            <p class="text-muted mb-0">
+                Official society announcements, circulars, and notifications
+            </p>
+        </div>
+        @if (User.IsInRole("Admin"))
         {
-            <tr>
-
-                <td>@item.Id</td>
-
-                <td>@item.Title</td>
-
-                <td>@item.Content</td>
-
-                <td>@item.CreatedDate</td>
-
-                <td>@item.PublishedDate</td>
-
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@item.Id">
-                        Details
-                    </a>
-
-                    |
-
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id">
-                        Edit
-                    </a>
-
-                    |
-
-                    <a asp-action="Delete"
-                       asp-route-id="@item.Id">
-                        Delete
-                    </a>
-                </td>
-
-            </tr>
+            <div>
+                <a asp-action="Create" class="btn btn-primary">
+                    + Post New Notice
+                </a>
+            </div>
         }
+    </div>
 
-    </tbody>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Published Notices</h5>
+            <span class="badge bg-secondary">@Model.Count() Notices</span>
+        </div>
 
-</table>
+        <div class="card-body p-0">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <div class="fs-2 text-muted mb-2">📢</div>
+                    <h6 class="fw-bold text-muted">No Notices Found</h6>
+                    <p class="text-muted small mb-0">There are no notices published yet.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">ID</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Published Date</th>
+                                <th class="text-end pe-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-3 fw-semibold">
+                                        #@item.Id
+                                    </td>
+                                    <td class="fw-semibold">
+                                        @item.Title
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 320px;" title="@item.Content">
+                                            @item.Content
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @(item.PublishedDate?.ToString("dd MMM yyyy, hh:mm tt") ?? "-")
+                                    </td>
+                                    <td class="text-end pe-3">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-outline-primary">
+                                                Details
+                                            </a>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <a asp-action="Edit"
+                                                   asp-route-id="@item.Id"
+                                                   class="btn btn-outline-secondary">
+                                                    Edit
+                                                </a>
+                                                <a asp-action="Delete"
+                                                   asp-route-id="@item.Id"
+                                                   class="btn btn-outline-danger">
+                                                    Delete
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

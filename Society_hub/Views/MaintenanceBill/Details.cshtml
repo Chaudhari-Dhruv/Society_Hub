@@ -1,56 +1,74 @@
-﻿@model Society_hub.Models.MaintenanceBill
+@model Society_hub.Models.MaintenanceBill
 
-<h1>Maintenance Bill Details</h1>
+@{
+    ViewData["Title"] = "Maintenance Bill Details - #" + Model.Id;
+}
 
-<p>
-    <strong>Bill ID:</strong>
-    @Model.Id
-</p>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0">Maintenance Bill Details</h4>
+                    <span class="badge bg-light text-primary">#@Model.Id</span>
+                </div>
 
-<p>
-    <strong>Resident:</strong>
-    @Model.Resident?.FullName
-</p>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+                        <div>
+                            <small class="text-muted d-block">Billing Month</small>
+                            <h4 class="fw-bold mb-0">@Model.BillingMonth.ToString("MMMM yyyy")</h4>
+                        </div>
+                        <div>
+                            @if (Model.PaymentStatus == "Paid")
+                            {
+                                <span class="badge bg-success fs-6 px-3 py-2">Paid</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark fs-6 px-3 py-2">Pending</span>
+                            }
+                        </div>
+                    </div>
 
-<p>
-    <strong>Amount:</strong>
-    ₹@Model.Amount
-</p>
+                    <div class="card bg-light border-0 p-3 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold text-muted">Bill Amount:</span>
+                            <span class="fs-4 fw-bold text-primary">₹@Model.Amount.ToString("N2")</span>
+                        </div>
+                    </div>
 
-<p>
-    <strong>Billing Month:</strong>
-    @Model.BillingMonth.ToString("MMMM yyyy")
-</p>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-5 text-muted">Resident Name:</dt>
+                        <dd class="col-sm-7 fw-semibold">@(Model.Resident?.FullName ?? "N/A")</dd>
 
-<p>
-    <strong>Due Date:</strong>
-    @Model.DueDate.ToString("dd-MM-yyyy")
-</p>
+                        <dt class="col-sm-5 text-muted">Due Date:</dt>
+                        <dd class="col-sm-7">@Model.DueDate.ToString("dd MMMM yyyy")</dd>
 
-<p>
-    <strong>Payment Status:</strong>
-    @Model.PaymentStatus
-</p>
+                        <dt class="col-sm-5 text-muted">Payment Date:</dt>
+                        <dd class="col-sm-7">@(Model.PaymentDate?.ToString("dd MMMM yyyy") ?? "Not Paid")</dd>
 
-<p>
-    <strong>Payment Date:</strong>
-    @(Model.PaymentDate?.ToString("dd-MM-yyyy") ?? "Not Paid")
-</p>
+                        <dt class="col-sm-5 text-muted">Receipt Number:</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge bg-light text-dark border">
+                                @(string.IsNullOrEmpty(Model.ReceiptNumber) ? "Not Generated" : Model.ReceiptNumber)
+                            </span>
+                        </dd>
+                    </dl>
 
-<p>
-    <strong>Receipt Number:</strong>
-    @(Model.ReceiptNumber ?? "Not Generated")
-</p>
-
-<br />
-
-<a asp-action="Edit"
-   asp-route-id="@Model.Id">
-    Edit
-</a>
-
-|
-
-<a asp-action="Index">
-    Back to Bills
-</a>
+                    <div class="d-flex gap-2 border-top pt-3">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            Edit Bill
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                            Delete
+                        </a>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Back to Bills
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

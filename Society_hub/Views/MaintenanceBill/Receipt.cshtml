@@ -1,54 +1,74 @@
-﻿@model Society_hub.Models.MaintenanceBill
+@model Society_hub.Models.MaintenanceBill
 
-<h1>Payment Receipt</h1>
+@{
+    ViewData["Title"] = "Payment Receipt";
+}
 
-<hr />
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border border-2 border-primary">
+                <div class="card-header bg-primary text-white py-3 text-center">
+                    <h3 class="fw-bold mb-1">Society Hub</h3>
+                    <p class="mb-0 small text-light">Official Maintenance Payment Receipt</p>
+                </div>
 
-<h2>SocietyHub</h2>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <div>
+                            <small class="text-muted d-block">Receipt Number</small>
+                            <span class="fw-bold fs-5 text-primary">@Model.ReceiptNumber</span>
+                        </div>
+                        <div class="text-end">
+                            <small class="text-muted d-block">Status</small>
+                            <span class="badge bg-success px-3 py-2">@Model.PaymentStatus</span>
+                        </div>
+                    </div>
 
-<p>
-    <strong>Receipt Number:</strong>
-    @Model.ReceiptNumber
-</p>
+                    <div class="row g-3 mb-3">
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Resident Name</small>
+                            <span class="fw-semibold">@Model.Resident?.FullName</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Flat Number</small>
+                            <span class="fw-semibold">Flat @(Model.Resident?.Flat?.FlatNumber ?? "N/A")</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Billing Month</small>
+                            <span class="fw-semibold">@Model.BillingMonth.ToString("MMMM yyyy")</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Payment Date</small>
+                            <span class="fw-semibold">@(Model.PaymentDate?.ToString("dd MMMM yyyy") ?? "-")</span>
+                        </div>
+                    </div>
 
-<p>
-    <strong>Resident:</strong>
-    @Model.Resident?.FullName
-</p>
+                    <div class="card bg-light border-0 p-3 mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">Total Amount Paid:</span>
+                            <span class="fs-4 fw-bold text-success">₹@Model.Amount.ToString("N2")</span>
+                        </div>
+                    </div>
 
-<p>
-    <strong>Billing Month:</strong>
-    @Model.BillingMonth.ToString("MMMM yyyy")
-</p>
+                    <div class="alert alert-success border-0 small mb-4">
+                        <i class="bi bi-check-circle-fill me-1"></i>
+                        This electronic receipt acknowledges and confirms full receipt of the maintenance fee for the billing month mentioned above.
+                    </div>
 
-<p>
-    <strong>Amount Paid:</strong>
-    ₹@Model.Amount
-</p>
-
-<p>
-    <strong>Payment Date:</strong>
-    @Model.PaymentDate?.ToString("dd-MM-yyyy")
-</p>
-
-<p>
-    <strong>Payment Status:</strong>
-    @Model.PaymentStatus
-</p>
-
-<hr />
-
-<p>
-    This receipt confirms that the maintenance bill has been paid.
-</p>
-
-<button onclick="window.print()">
-    Print Receipt
-</button>
-
-<br />
-<br />
-
-<a asp-action="PaymentHistory">
-    Back to Payment History
-</a>
+                    <div class="d-flex gap-2 d-print-none">
+                        <button onclick="window.print()" class="btn btn-primary flex-grow-1">
+                            🖨️ Print Receipt
+                        </button>
+                        <a asp-action="PaymentHistory" class="btn btn-outline-secondary">
+                            Back to History
+                        </a>
+                        <a asp-action="MyBills" class="btn btn-outline-secondary">
+                            My Bills
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

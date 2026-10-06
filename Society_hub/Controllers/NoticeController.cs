@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Society_hub.Data;
@@ -15,6 +16,8 @@ namespace Society_hub.Controllers
         }
 
         // GET: Notice
+        // Admin + Resident can view notices
+        [Authorize(Roles = "Admin,Resident")]
         public async Task<IActionResult> Index()
         {
             var notices = await _context.Notices
@@ -25,6 +28,8 @@ namespace Society_hub.Controllers
         }
 
         // GET: Notice/Details/5
+        // Admin + Resident can view notice details
+        [Authorize(Roles = "Admin,Resident")]
         public async Task<IActionResult> Details(int id)
         {
             var notice = await _context.Notices
@@ -37,14 +42,18 @@ namespace Society_hub.Controllers
         }
 
         // GET: Notice/Create
+        // Admin only
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Notice/Create
+        // Admin only
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(Notice notice)
         {
             if (ModelState.IsValid)
@@ -62,9 +71,12 @@ namespace Society_hub.Controllers
         }
 
         // GET: Notice/Edit/5
+        // Admin only
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
-            var notice = await _context.Notices.FindAsync(id);
+            var notice = await _context.Notices
+                .FindAsync(id);
 
             if (notice == null)
                 return NotFound();
@@ -73,9 +85,13 @@ namespace Society_hub.Controllers
         }
 
         // POST: Notice/Edit/5
+        // Admin only
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Notice notice)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(
+            int id,
+            Notice notice)
         {
             if (id != notice.Id)
                 return NotFound();
@@ -92,6 +108,8 @@ namespace Society_hub.Controllers
         }
 
         // GET: Notice/Delete/5
+        // Admin only
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var notice = await _context.Notices
@@ -104,11 +122,14 @@ namespace Society_hub.Controllers
         }
 
         // POST: Notice/Delete/5
+        // Admin only
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var notice = await _context.Notices.FindAsync(id);
+            var notice = await _context.Notices
+                .FindAsync(id);
 
             if (notice != null)
             {
@@ -118,7 +139,10 @@ namespace Society_hub.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
         // GET: Notice/ResidentNotices
+        // Resident only
+        [Authorize(Roles = "Resident")]
         public async Task<IActionResult> ResidentNotices()
         {
             var notices = await _context.Notices

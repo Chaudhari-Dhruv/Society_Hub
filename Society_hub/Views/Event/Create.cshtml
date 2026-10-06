@@ -1,49 +1,58 @@
-﻿@model Society_hub.Models.Event
+@model Society_hub.Models.Event
 
-<h1>Create Event</h1>
-
-<form asp-action="Create" method="post">
-
-    <div>
-        <label>Title</label>
-        <input asp-for="Title" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Description</label>
-        <textarea asp-for="Description"></textarea>
-    </div>
-
-    <br />
-
-    <div>
-        <label>Location</label>
-        <input asp-for="Location" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Event Date</label>
-        <input asp-for="EventDate" type="datetime-local" />
-    </div>
-
-    <br />
-
-    <button type="submit">
-        Create Event
-    </button>
-
-</form>
-
-<br />
-
-<a asp-action="Index">
-    Back to Events
-</a>@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    ViewData["Title"] = "Create Event";
 }
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Create New Event</h4>
+                    <small>Schedule an official event for residents</small>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold">Event Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="e.g. Annual General Body Meeting" required />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Event details and agenda..." required></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Location" class="form-label fw-semibold">Location / Venue</label>
+                            <input asp-for="Location" class="form-control" placeholder="e.g. Clubhouse / Society Hall" required />
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="EventDate" class="form-label fw-semibold">Event Date &amp; Time</label>
+                            <input asp-for="EventDate" type="datetime-local" class="form-control" required />
+                            <span asp-validation-for="EventDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Create Event
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

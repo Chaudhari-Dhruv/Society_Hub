@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Society_hub.Data;
@@ -5,6 +6,7 @@ using Society_hub.Models;
 
 namespace Society_hub.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ResidentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -72,7 +74,8 @@ namespace Society_hub.Controllers
         // GET: Resident/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var resident = await _context.Residents.FindAsync(id);
+            var resident = await _context.Residents
+                .FindAsync(id);
 
             if (resident == null)
                 return NotFound();
@@ -87,7 +90,9 @@ namespace Society_hub.Controllers
         // POST: Resident/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Resident resident)
+        public async Task<IActionResult> Edit(
+            int id,
+            Resident resident)
         {
             if (id != resident.Id)
                 return NotFound();
@@ -126,7 +131,8 @@ namespace Society_hub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var resident = await _context.Residents.FindAsync(id);
+            var resident = await _context.Residents
+                .FindAsync(id);
 
             if (resident != null)
             {

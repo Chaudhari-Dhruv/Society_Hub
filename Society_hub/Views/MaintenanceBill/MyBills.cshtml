@@ -1,72 +1,115 @@
-﻿@model IEnumerable<Society_hub.Models.MaintenanceBill>
+@model IEnumerable<Society_hub.Models.MaintenanceBill>
 
-<h1>My Maintenance Bills</h1>
-
-@if (!Model.Any())
-{
-    <p>You don't have any maintenance bills.</p>
+@{
+    ViewData["Title"] = "My Maintenance Bills";
 }
-else
-{
-    <table border="1" cellpadding="10">
 
-        <thead>
-            <tr>
-                <th>Bill ID</th>
-                <th>Billing Month</th>
-                <th>Amount</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Payment Date</th>
-                <th>Receipt</th>
-                <th>Action</th>
-            </tr>
-        </thead>
+<div class="container-fluid py-3">
 
-        <tbody>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">My Maintenance Bills</h1>
+            <p class="text-muted mb-0">
+                View your society maintenance statements and payment status
+            </p>
+        </div>
+        <div>
+            <a asp-action="PaymentHistory" class="btn btn-outline-primary">
+                🧾 Payment History
+            </a>
+        </div>
+    </div>
 
-            @foreach (var bill in Model)
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Maintenance Statements</h5>
+            <span class="badge bg-secondary">@Model.Count() Records</span>
+        </div>
+
+        <div class="card-body p-0">
+            @if (!Model.Any())
             {
-                <tr>
-
-                    <td>@bill.Id</td>
-
-                    <td>
-                        @bill.BillingMonth.ToString("MMMM yyyy")
-                    </td>
-
-                    <td>
-                        ₹@bill.Amount
-                    </td>
-
-                    <td>
-                        @bill.DueDate.ToString("dd-MM-yyyy")
-                    </td>
-
-                    <td>
-                        @bill.PaymentStatus
-                    </td>
-
-                    <td>
-                        @(bill.PaymentDate?.ToString("dd-MM-yyyy")
-                            ?? "Not Paid")
-                    </td>
-
-                    <td>
-                        @(bill.ReceiptNumber ?? "Not Available")
-                    </td>
-
-                    <td>
-                        <a asp-action="Details"
-                           asp-route-id="@bill.Id">
-                            View Details
-                        </a>
-                    </td>
-
-                </tr>
+                <div class="text-center py-5">
+                    <div class="fs-2 text-muted mb-2">💰</div>
+                    <h6 class="fw-bold text-muted">No Maintenance Bills</h6>
+                    <p class="text-muted small mb-0">You do not have any maintenance bills issued at this time.</p>
+                </div>
             }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Bill ID</th>
+                                <th>Billing Month</th>
+                                <th>Amount</th>
+                                <th>Due Date</th>
+                                <th>Status</th>
+                                <th>Payment Date</th>
+                                <th>Receipt #</th>
+                                <th class="text-end pe-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var bill in Model)
+                            {
+                                <tr>
+                                    <td class="ps-3 fw-semibold">
+                                        #@bill.Id
+                                    </td>
+                                    <td>
+                                        @bill.BillingMonth.ToString("MMMM yyyy")
+                                    </td>
+                                    <td class="fw-bold">
+                                        ₹@bill.Amount.ToString("N2")
+                                    </td>
+                                    <td>
+                                        @bill.DueDate.ToString("dd MMM yyyy")
+                                    </td>
+                                    <td>
+                                        @if (bill.PaymentStatus == "Paid")
+                                        {
+                                            <span class="badge bg-success">Paid</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @(bill.PaymentDate?.ToString("dd MMM yyyy") ?? "-")
+                                    </td>
+                                    <td>
+                                        @(string.IsNullOrEmpty(bill.ReceiptNumber) ? "-" : bill.ReceiptNumber)
+                                    </td>
+                                    <td class="text-end pe-3">
+                                        @if (bill.PaymentStatus == "Paid")
+                                        {
+                                            <a asp-action="Receipt"
+                                               asp-route-id="@bill.Id"
+                                               class="btn btn-sm btn-outline-success">
+                                                View Receipt
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">Pay at Office</span>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
 
-        </tbody>
+    <div class="mt-4">
+        <a asp-controller="ResidentDashboard" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Resident Dashboard
+        </a>
+    </div>
 
-    </table>
-}
+</div>

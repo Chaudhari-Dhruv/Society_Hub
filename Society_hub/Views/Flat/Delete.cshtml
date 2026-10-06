@@ -1,27 +1,50 @@
-﻿@model Society_hub.Models.Flat
+@model Society_hub.Models.Flat
 
-<h1>Delete Flat</h1>
+@{
+    ViewData["Title"] = "Delete Flat - " + Model.FlatNumber;
+}
 
-<h3>Are you sure you want to delete this flat?</h3>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm border-0 border-top border-danger border-4">
+                <div class="card-header bg-white py-3">
+                    <h4 class="fw-bold mb-0 text-danger">Delete Flat</h4>
+                    <small class="text-muted">Are you sure you want to remove this flat?</small>
+                </div>
 
-<p>
-    <strong>Flat Number:</strong> @Model.FlatNumber
-</p>
+                <div class="card-body p-4">
+                    <div class="alert alert-warning border-0 small mb-4">
+                        ⚠️ Warning: Deleting this flat will remove it permanently from the society records.
+                    </div>
 
-<p>
-    <strong>Floor Number:</strong> @Model.FloorNumber
-</p>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-5 text-muted">Flat Number:</dt>
+                        <dd class="col-sm-7 fw-bold">Flat @Model.FlatNumber</dd>
 
-<p>
-    <strong>Occupied:</strong> @Model.IsOccupied
-</p>
+                        <dt class="col-sm-5 text-muted">Floor Number:</dt>
+                        <dd class="col-sm-7">Floor @Model.FloorNumber</dd>
 
-<form asp-action="Delete" method="post">
+                        <dt class="col-sm-5 text-muted">Occupancy Status:</dt>
+                        <dd class="col-sm-7">
+                            @(Model.IsOccupied ? "Occupied" : "Vacant")
+                        </dd>
+                    </dl>
 
-    <input type="hidden" asp-for="Id" />
-
-    <button type="submit">Delete</button>
-
-    <a asp-action="Index">Cancel</a>
-
-</form>
+                    <form asp-action="Delete" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-danger px-4">
+                                Confirm Delete
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

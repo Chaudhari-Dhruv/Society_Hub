@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Society_hub.Data;
@@ -8,13 +10,22 @@ namespace Society_hub.Controllers
     public class MaintenanceBillController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public MaintenanceBillController(ApplicationDbContext context)
+        public MaintenanceBillController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
+        // =========================
+        // ADMIN ACTIONS
+        // =========================
+
         // GET: MaintenanceBill
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             var bills = await _context.MaintenanceBills
@@ -26,6 +37,7 @@ namespace Society_hub.Controllers
         }
 
         // GET: MaintenanceBill/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int id)
         {
             var bill = await _context.MaintenanceBills
@@ -39,6 +51,7 @@ namespace Society_hub.Controllers
         }
 
         // GET: MaintenanceBill/Create
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Residents = await _context.Residents
@@ -51,6 +64,7 @@ namespace Society_hub.Controllers
         // POST: MaintenanceBill/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(MaintenanceBill bill)
         {
             if (ModelState.IsValid)
@@ -72,6 +86,7 @@ namespace Society_hub.Controllers
         }
 
         // GET: MaintenanceBill/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             var bill = await _context.MaintenanceBills
@@ -90,7 +105,10 @@ namespace Society_hub.Controllers
         // POST: MaintenanceBill/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, MaintenanceBill bill)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(
+            int id,
+            MaintenanceBill bill)
         {
             if (id != bill.Id)
                 return NotFound();
@@ -111,6 +129,7 @@ namespace Society_hub.Controllers
         }
 
         // GET: MaintenanceBill/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             var bill = await _context.MaintenanceBills
@@ -126,9 +145,11 @@ namespace Society_hub.Controllers
         // POST: MaintenanceBill/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var bill = await _context.MaintenanceBills.FindAsync(id);
+            var bill = await _context.MaintenanceBills
+                .FindAsync(id);
 
             if (bill != null)
             {
@@ -142,6 +163,7 @@ namespace Society_hub.Controllers
         // POST: MaintenanceBill/MarkAsPaid/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> MarkAsPaid(
             int id,
             DateTime paymentDate,
@@ -162,15 +184,32 @@ namespace Society_hub.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // =========================
+        // RESIDENT ACTIONS
+        // =========================
+
         // GET: MaintenanceBill/MyBills
+        [Authorize(Roles = "Resident")]
         public async Task<IActionResult> MyBills()
         {
-            // Temporary resident ID for testing
-            int residentId = 1;
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return Unauthorized();
+
+            var resident = await _context.Residents
+                .FirstOrDefaultAsync(r =>
+                    r.ApplicationUserId == user.Id);
+
+            if (resident == null)
+            {
+                return NotFound(
+                    "Resident profile not found for this account.");
+            }
 
             var bills = await _context.MaintenanceBills
                 .Include(b => b.Resident)
-                .Where(b => b.ResidentId == residentId)
+                .Where(b => b.ResidentId == resident.Id)
                 .OrderByDescending(b => b.BillingMonth)
                 .ToListAsync();
 
@@ -178,15 +217,28 @@ namespace Society_hub.Controllers
         }
 
         // GET: MaintenanceBill/PaymentHistory
+        [Authorize(Roles = "Resident")]
         public async Task<IActionResult> PaymentHistory()
         {
-            // Temporary resident ID for testing
-            int residentId = 1;
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return Unauthorized();
+
+            var resident = await _context.Residents
+                .FirstOrDefaultAsync(r =>
+                    r.ApplicationUserId == user.Id);
+
+            if (resident == null)
+            {
+                return NotFound(
+                    "Resident profile not found for this account.");
+            }
 
             var payments = await _context.MaintenanceBills
                 .Include(b => b.Resident)
                 .Where(b =>
-                    b.ResidentId == residentId &&
+                    b.ResidentId == resident.Id &&
                     b.PaymentStatus == "Paid")
                 .OrderByDescending(b => b.PaymentDate)
                 .ToListAsync();
@@ -195,16 +247,29 @@ namespace Society_hub.Controllers
         }
 
         // GET: MaintenanceBill/Receipt/5
+        [Authorize(Roles = "Resident")]
         public async Task<IActionResult> Receipt(int id)
         {
-            // Temporary resident ID for testing
-            int residentId = 1;
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+                return Unauthorized();
+
+            var resident = await _context.Residents
+                .FirstOrDefaultAsync(r =>
+                    r.ApplicationUserId == user.Id);
+
+            if (resident == null)
+            {
+                return NotFound(
+                    "Resident profile not found for this account.");
+            }
 
             var bill = await _context.MaintenanceBills
                 .Include(b => b.Resident)
                 .FirstOrDefaultAsync(b =>
                     b.Id == id &&
-                    b.ResidentId == residentId &&
+                    b.ResidentId == resident.Id &&
                     b.PaymentStatus == "Paid");
 
             if (bill == null)

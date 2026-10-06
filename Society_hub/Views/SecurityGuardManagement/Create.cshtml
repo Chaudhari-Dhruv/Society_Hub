@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Add Security Guard";
+}
+
+<h1>Add Security Guard</h1>
+
+<form asp-action="Create" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="All"
+         class="text-danger">
+    </div>
+
+    <div class="mb-3">
+        <label>Full Name</label>
+
+        <input type="text"
+               name="fullName"
+               class="form-control"
+               required />
+    </div>
+
+    <div class="mb-3">
+        <label>Email</label>
+
+        <input type="email"
+               name="email"
+               class="form-control"
+               required />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+
+        <input type="password"
+               name="password"
+               class="form-control"
+               required />
+    </div>
+
+    <div class="mb-3">
+        <label>Phone</label>
+
+        <input type="text"
+               name="phone"
+               class="form-control"
+               required />
+    </div>
+
+    <div class="mb-3">
+        <label>Shift</label>
+
+        <select name="shift"
+                class="form-control"
+                required>
+
+            <option value="">-- Select Shift --</option>
+
+            <option value="Morning">
+                Morning
+            </option>
+
+            <option value="Evening">
+                Evening
+            </option>
+
+            <option value="Night">
+                Night
+            </option>
+
+        </select>
+
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Create Security Guard
+    </button>
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>

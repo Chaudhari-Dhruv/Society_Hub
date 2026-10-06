@@ -1,25 +1,46 @@
-﻿@model Society_hub.Models.ApartmentBlock
+@model Society_hub.Models.ApartmentBlock
 
-<h1>Add Apartment Block</h1>
+@{
+    ViewData["Title"] = "Add Apartment Block";
+}
 
-<form asp-action="Create" method="post">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Add Apartment Block</h4>
+                    <small>Register a new tower or building wing</small>
+                </div>
 
-    <div>
-        <label>Block Name</label>
-        <input asp-for="BlockName" />
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="BlockName" class="form-label fw-semibold">Block Name</label>
+                            <input asp-for="BlockName" class="form-control" placeholder="e.g. Block A, Tower 1" required />
+                            <span asp-validation-for="BlockName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="TotalFlats" class="form-label fw-semibold">Total Flats</label>
+                            <input asp-for="TotalFlats" type="number" min="1" class="form-control" placeholder="e.g. 50" required />
+                            <span asp-validation-for="TotalFlats" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Save Block
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Total Flats</label>
-        <input asp-for="TotalFlats" type="number" />
-    </div>
-
-    <br />
-
-    <button type="submit">Save</button>
-
-    <a asp-action="Index">Back</a>
-
-</form>
+</div>

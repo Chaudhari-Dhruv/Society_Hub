@@ -1,31 +1,622 @@
+/* ===================================================================
+   SOCIETY HUB - PREMIUM DARK BLUE THEME
+   A modern, executive dark navy design system for residential management
+   =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Dark Blue Palette */
+  --sh-bg-base: #060d1f;
+  --sh-bg-main: #0b152e;
+  --sh-bg-surface: #101e40;
+  --sh-bg-surface-elevated: #162752;
+  --sh-bg-surface-hover: #1c3268;
+  --sh-bg-input: #091228;
+  
+  /* Primary & Accent Blues */
+  --sh-primary: #3b82f6;
+  --sh-primary-hover: #2563eb;
+  --sh-primary-glow: rgba(59, 130, 246, 0.35);
+  --sh-primary-gradient: linear-gradient(135deg, #1d4ed8 0%, #38bdf8 100%);
+  --sh-card-gradient: linear-gradient(180deg, rgba(22, 39, 82, 0.85) 0%, rgba(16, 30, 64, 0.95) 100%);
+  
+  /* Text & Typography */
+  --sh-text-primary: #f8fafc;
+  --sh-text-secondary: #cbd5e1;
+  --sh-text-muted: #94a3b8;
+  --sh-text-dim: #64748b;
+  --sh-text-highlight: #60a5fa;
+
+  /* Borders & Dividers */
+  --sh-border: rgba(99, 140, 230, 0.18);
+  --sh-border-light: rgba(255, 255, 255, 0.08);
+  --sh-border-focus: #38bdf8;
+  
+  /* Status Colors (Tailored for Dark Mode) */
+  --sh-success: #10b981;
+  --sh-success-bg: rgba(16, 185, 129, 0.15);
+  --sh-warning: #f59e0b;
+  --sh-warning-bg: rgba(245, 158, 11, 0.15);
+  --sh-danger: #ef4444;
+  --sh-danger-bg: rgba(239, 68, 68, 0.15);
+  --sh-info: #06b6d4;
+  --sh-info-bg: rgba(6, 182, 212, 0.15);
+
+  /* Shadows */
+  --sh-shadow-sm: 0 2px 8px rgba(3, 7, 18, 0.4);
+  --sh-shadow-md: 0 10px 25px -5px rgba(3, 7, 18, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.04);
+  --sh-shadow-lg: 0 20px 35px -10px rgba(3, 7, 18, 0.8), 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+/* ===================================================================
+   BASE & TYPOGRAPHY
+   =================================================================== */
+
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
+  font-size: 15px;
   position: relative;
   min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--sh-bg-main);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(29, 78, 216, 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
+  background-attachment: fixed;
+  color: var(--sh-text-primary);
+  margin-bottom: 70px;
+  -webkit-font-smoothing: antialiased;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+h1, h2, h3, h4, h5, h6 {
+  color: var(--sh-text-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+p, span, label, small {
+  color: inherit;
+}
+
+a {
+  color: var(--sh-text-highlight);
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+a:hover {
+  color: #93c5fd;
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+}
+
+/* ===================================================================
+   NAVBAR & HEADER
+   =================================================================== */
+
+.custom-navbar {
+  background: rgba(9, 17, 39, 0.92) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--sh-border) !important;
+  box-shadow: 0 4px 20px rgba(3, 7, 18, 0.5) !important;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.custom-navbar .navbar-brand {
+  font-size: 1.35rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #60a5fa 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: -0.01em;
+}
+
+.custom-navbar .nav-link {
+  color: var(--sh-text-secondary) !important;
+  font-weight: 500;
+  padding: 0.5rem 0.85rem !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link:focus {
+  color: #fff !important;
+  background-color: rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
+}
+
+.custom-navbar .nav-link.active {
+  color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.15);
+}
+
+.custom-navbar .navbar-toggler {
+  border-color: var(--sh-border);
+  color: #fff;
+}
+
+/* ===================================================================
+   CARDS & CONTAINERS
+   =================================================================== */
+
+.card {
+  background: var(--sh-card-gradient) !important;
+  border: 1px solid var(--sh-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--sh-shadow-md) !important;
+  color: var(--sh-text-primary) !important;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  border-color: rgba(99, 140, 230, 0.35) !important;
+}
+
+.card-header {
+  background: var(--sh-bg-surface-elevated) !important;
+  border-bottom: 1px solid var(--sh-border) !important;
+  color: #fff !important;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
+  padding: 1.15rem 1.5rem;
+}
+
+.card-header.bg-primary {
+  background: var(--sh-primary-gradient) !important;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-footer {
+  background: rgba(16, 30, 64, 0.5) !important;
+  border-top: 1px solid var(--sh-border) !important;
+  color: var(--sh-text-muted) !important;
+}
+
+/* Overriding Bootstrap bg-light & bg-white in dark mode */
+.bg-light {
+  background-color: var(--sh-bg-surface-elevated) !important;
+  color: var(--sh-text-primary) !important;
+}
+
+.bg-white {
+  background-color: var(--sh-bg-surface) !important;
+  color: var(--sh-text-primary) !important;
+}
+
+/* ===================================================================
+   HERO BANNER
+   =================================================================== */
+
+.hero-banner {
+  background: linear-gradient(135deg, rgba(22, 39, 82, 0.9) 0%, rgba(11, 21, 46, 0.95) 100%) !important;
+  border: 1px solid rgba(99, 140, 230, 0.25) !important;
+  box-shadow: var(--sh-shadow-lg) !important;
+  border-radius: 20px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ===================================================================
+   BUTTONS
+   =================================================================== */
+
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  padding: 0.6rem 1.25rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary {
+  background: var(--sh-primary-gradient) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45) !important;
+  filter: brightness(1.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline-primary {
+  border: 1.5px solid var(--sh-primary) !important;
+  color: #60a5fa !important;
+  background: transparent !important;
+}
+
+.btn-outline-primary:hover {
+  background: var(--sh-primary-gradient) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+  transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+  border: 1.5px solid rgba(148, 163, 184, 0.3) !important;
+  color: var(--sh-text-secondary) !important;
+  background: transparent !important;
+}
+
+.btn-outline-secondary:hover {
+  background-color: var(--sh-bg-surface-elevated) !important;
+  color: #fff !important;
+  border-color: rgba(148, 163, 184, 0.6) !important;
+}
+
+.btn-secondary {
+  background-color: #1e293b !important;
+  border: 1px solid var(--sh-border) !important;
+  color: #e2e8f0 !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+  border: none !important;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%) !important;
+  border: none !important;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%) !important;
+  color: #000 !important;
+  border: none !important;
+}
+
+/* ===================================================================
+   FORM CONTROLS & INPUTS
+   =================================================================== */
+
+.form-control,
+.form-select {
+  background-color: var(--sh-bg-input) !important;
+  border: 1px solid var(--sh-border) !important;
+  color: #f8fafc !important;
+  border-radius: 10px !important;
+  padding: 0.65rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background-color: #0e1a38 !important;
+  border-color: var(--sh-border-focus) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+  outline: none !important;
+}
+
+.form-control::placeholder {
+  color: var(--sh-text-dim) !important;
+}
+
+.form-label {
+  color: var(--sh-text-secondary);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  font-size: 0.92rem;
+}
+
+.form-text {
+  color: var(--sh-text-dim) !important;
+  font-size: 0.82rem;
+}
+
+/* Form floating labels in dark mode */
+.form-floating > .form-control,
+.form-floating > .form-control:focus {
+  color: #f8fafc !important;
+}
+.form-floating > label {
+  color: var(--sh-text-dim) !important;
+}
+
+/* ===================================================================
+   TABLES
+   =================================================================== */
+
+.table {
+  color: var(--sh-text-primary) !important;
+  border-color: var(--sh-border) !important;
+  vertical-align: middle;
+}
+
+.table th {
+  background-color: var(--sh-bg-surface-elevated) !important;
+  color: #93c5fd !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid var(--sh-border) !important;
+  padding: 1rem 0.9rem;
+}
+
+.table td {
+  background-color: transparent !important;
+  color: var(--sh-text-secondary) !important;
+  border-bottom: 1px solid var(--sh-border) !important;
+  padding: 0.95rem 0.9rem;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > td {
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+
+.table-hover > tbody > tr:hover > td {
+  background-color: rgba(56, 189, 248, 0.08) !important;
+  color: #ffffff !important;
+}
+
+/* ===================================================================
+   BADGES & PILLS
+   =================================================================== */
+
+.badge {
+  padding: 0.45em 0.85em;
+  font-weight: 600;
+  border-radius: 8px;
+  letter-spacing: 0.02em;
+}
+
+.badge.bg-light,
+.badge.bg-light.text-dark {
+  background-color: rgba(56, 189, 248, 0.15) !important;
+  color: #7dd3fc !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+}
+
+.badge.bg-primary {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  color: #93c5fd !important;
+  border: 1px solid rgba(59, 130, 246, 0.4) !important;
+}
+
+.badge.bg-success {
+  background-color: var(--sh-success-bg) !important;
+  color: #6ee7b7 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+.badge.bg-warning {
+  background-color: var(--sh-warning-bg) !important;
+  color: #fde047 !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+}
+
+.badge.bg-danger {
+  background-color: var(--sh-danger-bg) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+}
+
+.badge.bg-info {
+  background-color: var(--sh-info-bg) !important;
+  color: #67e8f9 !important;
+  border: 1px solid rgba(6, 182, 212, 0.4) !important;
+}
+
+.badge.bg-secondary {
+  background-color: rgba(148, 163, 184, 0.15) !important;
+  color: #cbd5e1 !important;
+  border: 1px solid rgba(148, 163, 184, 0.25) !important;
+}
+
+/* ===================================================================
+   ALERTS
+   =================================================================== */
+
+.alert {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  backdrop-filter: blur(8px);
+}
+
+.alert-info {
+  background-color: rgba(14, 116, 144, 0.25) !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  color: #7dd3fc !important;
+}
+
+.alert-success {
+  background-color: rgba(6, 95, 70, 0.25) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  color: #6ee7b7 !important;
+}
+
+.alert-danger {
+  background-color: rgba(153, 27, 27, 0.25) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #fca5a5 !important;
+}
+
+.alert-warning {
+  background-color: rgba(146, 64, 14, 0.25) !important;
+  border-color: rgba(245, 158, 11, 0.4) !important;
+  color: #fde047 !important;
+}
+
+/* ===================================================================
+   ROLE CARDS (REGISTRATION PAGE)
+   =================================================================== */
+
+.role-card {
+  cursor: pointer;
+  background-color: var(--sh-bg-surface-elevated) !important;
+  border: 2px solid var(--sh-border) !important;
+  border-radius: 14px !important;
+  color: var(--sh-text-primary) !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.role-card:hover {
+  border-color: var(--sh-primary) !important;
+  background-color: var(--sh-bg-surface-hover) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(3, 7, 18, 0.6);
+}
+
+.role-card.active-role {
+  border-color: #38bdf8 !important;
+  background: linear-gradient(180deg, rgba(30, 64, 175, 0.35) 0%, rgba(16, 30, 64, 0.75) 100%) !important;
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.25), inset 0 0 15px rgba(56, 189, 248, 0.1) !important;
+}
+
+.role-card .text-dark {
+  color: #ffffff !important;
+}
+
+.role-section {
+  background-color: rgba(14, 26, 56, 0.75) !important;
+  border: 1px solid var(--sh-border) !important;
+  backdrop-filter: blur(6px);
+}
+
+/* ===================================================================
+   TEXT UTILITIES & OVERRIDES
+   =================================================================== */
+
+.text-dark {
+  color: var(--sh-text-primary) !important;
+}
+
+.text-muted {
+  color: var(--sh-text-muted) !important;
+}
+
+.text-secondary {
+  color: var(--sh-text-secondary) !important;
+}
+
+.text-primary {
+  color: #60a5fa !important;
+}
+
+.border-primary {
+  border-color: #3b82f6 !important;
+}
+
+.border-info {
+  border-color: #06b6d4 !important;
+}
+
+.border-warning {
+  border-color: #f59e0b !important;
+}
+
+.border-success {
+  border-color: #10b981 !important;
+}
+
+hr {
+  border-color: var(--sh-border) !important;
+  opacity: 1 !important;
+}
+
+/* ===================================================================
+   DROPDOWNS, MODALS & FOOTER
+   =================================================================== */
+
+.dropdown-menu {
+  background-color: var(--sh-bg-surface-elevated) !important;
+  border: 1px solid var(--sh-border) !important;
+  box-shadow: var(--sh-shadow-lg) !important;
+  border-radius: 12px;
+}
+
+.dropdown-item {
+  color: var(--sh-text-secondary) !important;
+  padding: 0.6rem 1.2rem;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--sh-bg-surface-hover) !important;
+  color: #fff !important;
+}
+
+.modal-content {
+  background: var(--sh-card-gradient) !important;
+  border: 1px solid var(--sh-border) !important;
+  border-radius: 16px !important;
+  box-shadow: var(--sh-shadow-lg) !important;
+  color: var(--sh-text-primary) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--sh-border) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--sh-border) !important;
+}
+
+.custom-dark-footer {
+  background-color: #070e22 !important;
+  border-top: 1px solid var(--sh-border) !important;
+  color: var(--sh-text-dim) !important;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.custom-dark-footer a {
+  color: var(--sh-text-muted) !important;
+}
+
+.custom-dark-footer a:hover {
+  color: #60a5fa !important;
+}
+
+/* ===================================================================
+   SCROLLBAR & FOCUS OUTLINES
+   =================================================================== */
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060d1f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e3568;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb;
 }

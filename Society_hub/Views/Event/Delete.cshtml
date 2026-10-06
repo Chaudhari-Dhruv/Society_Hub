@@ -1,39 +1,51 @@
-﻿@model Society_hub.Models.Event
+@model Society_hub.Models.Event
 
-<h1>Delete Event</h1>
+@{
+    ViewData["Title"] = "Delete Event";
+}
 
-<h3>Are you sure you want to delete this event?</h3>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm border-0 border-top border-danger border-4">
+                <div class="card-header bg-white py-3">
+                    <h4 class="fw-bold mb-0 text-danger">Delete Event</h4>
+                    <small class="text-muted">Are you sure you want to delete this event?</small>
+                </div>
 
-<p>
-    <strong>Title:</strong>
-    @Model.Title
-</p>
+                <div class="card-body p-4">
+                    <div class="alert alert-warning border-0 small mb-4">
+                        ⚠️ Warning: Deleting this event will permanently remove all associated registrations.
+                    </div>
 
-<p>
-    <strong>Description:</strong>
-    @Model.Description
-</p>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4 text-muted">Title:</dt>
+                        <dd class="col-sm-8 fw-bold">@Model.Title</dd>
 
-<p>
-    <strong>Location:</strong>
-    @Model.Location
-</p>
+                        <dt class="col-sm-4 text-muted">Venue:</dt>
+                        <dd class="col-sm-8">@Model.Location</dd>
 
-<p>
-    <strong>Event Date:</strong>
-    @Model.EventDate
-</p>
+                        <dt class="col-sm-4 text-muted">Event Date:</dt>
+                        <dd class="col-sm-8">@Model.EventDate.ToString("dd MMM yyyy, hh:mm tt")</dd>
 
-<form asp-action="Delete" method="post">
+                        <dt class="col-sm-4 text-muted">Description:</dt>
+                        <dd class="col-sm-8">@Model.Description</dd>
+                    </dl>
 
-    <input type="hidden" asp-for="Id" />
-
-    <button type="submit">
-        Delete
-    </button>
-
-    <a asp-action="Index">
-        Cancel
-    </a>
-
-</form>
+                    <form asp-action="Delete" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-danger px-4">
+                                Confirm Delete
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

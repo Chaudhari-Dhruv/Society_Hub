@@ -1,51 +1,258 @@
-﻿@{
-    ViewData["Title"] = "Register";
+@model Society_hub.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Account Registration";
 }
 
-<h1>Register</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-8">
+            <div class="card shadow border-0 rounded-4 overflow-hidden">
+                <div class="card-header bg-primary text-white py-4 text-center">
+                    <h3 class="fw-bold mb-1">Create Your Account</h3>
+                    <p class="mb-0 text-white-50">Join Society Hub with your dedicated role</p>
+                </div>
 
-<form asp-action="Register" method="post">
+                <div class="card-body p-4 p-md-5">
+                    <form asp-action="Register" method="post" id="registrationForm" novalidate>
+                        @Html.AntiForgeryToken()
 
-    @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-4" role="alert"></div>
 
-    <div asp-validation-summary="All"></div>
+                        <!-- 1. ROLE SELECTION -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary text-uppercase small tracking-wide">
+                                1. Select Account Type
+                            </label>
+                            <div class="row g-3">
+                                <!-- Admin Option -->
+                                <div class="col-md-4">
+                                    <label class="role-card border rounded-3 p-3 w-100 text-center cursor-pointer h-100 position-relative transition-all"
+                                           id="card-admin" for="role-admin">
+                                        <input type="radio"
+                                               class="form-check-input visually-hidden"
+                                               name="Role"
+                                               id="role-admin"
+                                               value="Admin"
+                                               @(Model?.Role == "Admin" ? "checked" : "")
+                                               onchange="onRoleChange('Admin')" />
+                                        <div class="fs-1 mb-2">🏢</div>
+                                        <div class="fw-bold text-dark mb-1">Admin</div>
+                                        <div class="text-muted small">Society management & full administrative control</div>
+                                    </label>
+                                </div>
 
-    <div>
-        <label>Full Name</label>
-        <input type="text"
-               name="fullName"
-               required />
+                                <!-- Resident Option -->
+                                <div class="col-md-4">
+                                    <label class="role-card border rounded-3 p-3 w-100 text-center cursor-pointer h-100 position-relative transition-all"
+                                           id="card-resident" for="role-resident">
+                                        <input type="radio"
+                                               class="form-check-input visually-hidden"
+                                               name="Role"
+                                               id="role-resident"
+                                               value="Resident"
+                                               @(Model?.Role == "Resident" || string.IsNullOrEmpty(Model?.Role) ? "checked" : "")
+                                               onchange="onRoleChange('Resident')" />
+                                        <div class="fs-1 mb-2">🏠</div>
+                                        <div class="fw-bold text-dark mb-1">Resident</div>
+                                        <div class="text-muted small">Flat owner/resident access to bills & complaints</div>
+                                    </label>
+                                </div>
+
+                                <!-- Security Guard Option -->
+                                <div class="col-md-4">
+                                    <label class="role-card border rounded-3 p-3 w-100 text-center cursor-pointer h-100 position-relative transition-all"
+                                           id="card-guard" for="role-guard">
+                                        <input type="radio"
+                                               class="form-check-input visually-hidden"
+                                               name="Role"
+                                               id="role-guard"
+                                               value="SecurityGuard"
+                                               @(Model?.Role == "SecurityGuard" ? "checked" : "")
+                                               onchange="onRoleChange('SecurityGuard')" />
+                                        <div class="fs-1 mb-2">🛡️</div>
+                                        <div class="fw-bold text-dark mb-1">Security Guard</div>
+                                        <div class="text-muted small">Gate security, shifts & visitor check-in desk</div>
+                                    </label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="Role" class="text-danger small mt-1 d-block"></span>
+                        </div>
+
+                        <hr class="my-4 text-muted" />
+
+                        <!-- 2. BASIC CREDENTIALS -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold text-secondary text-uppercase small tracking-wide">
+                                2. Personal & Login Details
+                            </label>
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="FullName" class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                                    <input asp-for="FullName" class="form-control" placeholder="e.g. John Doe" required />
+                                    <span asp-validation-for="FullName" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                    <input asp-for="Email" type="email" class="form-control" placeholder="name@example.com" required />
+                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Password" class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
+                                    <input asp-for="Password" type="password" class="form-control" placeholder="Minimum 6 characters" required />
+                                    <span asp-validation-for="Password" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="ConfirmPassword" class="form-label fw-semibold">Confirm Password <span class="text-danger">*</span></label>
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Re-enter password" required />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. ROLE-SPECIFIC FIELDS -->
+
+                        <!-- RESIDENT FIELDS -->
+                        <div id="section-resident" class="role-section border rounded-3 p-3 bg-light mb-4">
+                            <h6 class="fw-bold text-primary mb-3">🏠 Resident Details</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="Phone" class="form-label fw-semibold">Contact Phone Number</label>
+                                    <input asp-for="Phone" class="form-control" placeholder="e.g. +91 9876543210" />
+                                    <span asp-validation-for="Phone" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="FamilyMembers" class="form-label fw-semibold">Family Members</label>
+                                    <input asp-for="FamilyMembers" type="number" min="1" max="50" class="form-control" />
+                                    <span asp-validation-for="FamilyMembers" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-12">
+                                    <label asp-for="FlatId" class="form-label fw-semibold">Apartment Flat Allocation</label>
+                                    <select asp-for="FlatId" class="form-select">
+                                        <option value="">-- Optional: Assign Flat Later --</option>
+                                        @if (ViewBag.Flats != null)
+                                        {
+                                            @foreach (var flat in ViewBag.Flats)
+                                            {
+                                                <option value="@flat.Id">
+                                                    Flat @flat.FlatNumber (@flat.ApartmentBlock?.BlockName - Floor @flat.FloorNumber)
+                                                    @(flat.IsOccupied ? "[Currently Occupied]" : "[Vacant]")
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="FlatId" class="text-danger small"></span>
+                                    <div class="form-text">You can select your apartment flat now or have society administration allocate it later.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECURITY GUARD FIELDS -->
+                        <div id="section-securityguard" class="role-section border rounded-3 p-3 bg-light mb-4 d-none">
+                            <h6 class="fw-bold text-primary mb-3">🛡️ Security Guard Details</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label asp-for="GuardPhone" class="form-label fw-semibold">Guard Phone Number</label>
+                                    <input asp-for="GuardPhone" class="form-control" placeholder="e.g. +91 9811223344" />
+                                    <span asp-validation-for="GuardPhone" class="text-danger small"></span>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label asp-for="Shift" class="form-label fw-semibold">Assigned Duty Shift</label>
+                                    <select asp-for="Shift" class="form-select">
+                                        <option value="Morning">Morning Shift (06:00 AM - 02:00 PM)</option>
+                                        <option value="Evening">Evening Shift (02:00 PM - 10:00 PM)</option>
+                                        <option value="Night">Night Shift (10:00 PM - 06:00 AM)</option>
+                                        <option value="General">General Duty (09:00 AM - 06:00 PM)</option>
+                                    </select>
+                                    <span asp-validation-for="Shift" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ADMIN INFO -->
+                        <div id="section-admin" class="role-section alert alert-info mb-4 d-none">
+                            <div class="d-flex align-items-center">
+                                <div class="fs-3 me-3">🏢</div>
+                                <div>
+                                    <h6 class="fw-bold mb-1">Administrative Account</h6>
+                                    <p class="mb-0 small">
+                                        This account will receive full administrative access to manage apartment blocks, flats, resident directories, security guard staff, notices, events, and maintenance bills.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SUBMIT BUTTON -->
+                        <div class="d-grid mb-3">
+                            <button type="submit" id="btnSubmit" class="btn btn-primary py-3 fs-5 fw-bold shadow-sm">
+                                Complete Registration
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center border-top pt-3 mt-3">
+                        <p class="text-muted small mb-0">
+                            Already registered?
+                            <a asp-action="Login" class="text-decoration-none fw-semibold">
+                                Sign In here
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <br />
 
-    <div>
-        <label>Email</label>
-        <input type="email"
-               name="email"
-               required />
-    </div>
 
-    <br />
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function onRoleChange(role) {
+            // Update active styles on role cards
+            document.querySelectorAll('.role-card').forEach(function (card) {
+                card.classList.remove('active-role');
+            });
 
-    <div>
-        <label>Password</label>
-        <input type="password"
-               name="password"
-               required />
-    </div>
+            var cardMap = {
+                'Admin': 'card-admin',
+                'Resident': 'card-resident',
+                'SecurityGuard': 'card-guard'
+            };
 
-    <br />
+            if (cardMap[role]) {
+                var el = document.getElementById(cardMap[role]);
+                if (el) el.classList.add('active-role');
+            }
 
-    <button type="submit">
-        Register
-    </button>
+            // Hide all sections first
+            document.getElementById('section-resident').classList.add('d-none');
+            document.getElementById('section-securityguard').classList.add('d-none');
+            document.getElementById('section-admin').classList.add('d-none');
 
-</form>
+            // Show selected section
+            if (role === 'Resident') {
+                document.getElementById('section-resident').classList.remove('d-none');
+            } else if (role === 'SecurityGuard') {
+                document.getElementById('section-securityguard').classList.remove('d-none');
+            } else if (role === 'Admin') {
+                document.getElementById('section-admin').classList.remove('d-none');
+            }
+        }
 
-<br />
-
-<p>
-    Already have an account?
-    <a asp-action="Login">Login here</a>
-</p>
+        // Initialize state on DOM load
+        document.addEventListener('DOMContentLoaded', function () {
+            var selectedRole = document.querySelector('input[name="Role"]:checked');
+            var roleVal = selectedRole ? selectedRole.value : 'Resident';
+            onRoleChange(roleVal);
+        });
+    </script>
+}

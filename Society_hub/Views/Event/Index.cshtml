@@ -1,67 +1,115 @@
-﻿@model IEnumerable<Society_hub.Models.Event>
+@model IEnumerable<Society_hub.Models.Event>
 
-<h1>Society Events</h1>
+@{
+    ViewData["Title"] = "Society Events";
+}
 
-<p>
-    <a asp-action="Create">Create New Event</a>
-</p>
+<div class="container-fluid py-3">
 
-<table border="1" cellpadding="10">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Location</th>
-            <th>Event Date</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var item in Model)
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Society Events Management</h1>
+            <p class="text-muted mb-0">
+                Organize community programs, track dates, and oversee registrations
+            </p>
+        </div>
+        @if (User.IsInRole("Admin"))
         {
-            <tr>
-                <td>@item.Id</td>
-
-                <td>@item.Title</td>
-
-                <td>@item.Description</td>
-
-                <td>@item.Location</td>
-
-                <td>@item.EventDate</td>
-
-                <td>
-                    <a asp-action="Registrations"
-                       asp-route-id="@item.Id">
-                        Registrations
-                    </a>
-
-                    |
-
-                    <a asp-action="Details"
-                       asp-route-id="@item.Id">
-                        Details
-                    </a>
-
-                    |
-
-                    <a asp-action="Edit"
-                       asp-route-id="@item.Id">
-                        Edit
-                    </a>
-
-                    |
-
-                    <a asp-action="Delete"
-                       asp-route-id="@item.Id">
-                        Delete
-                    </a>
-
-                   
-                </td>
-            </tr>
+            <div>
+                <a asp-action="Create" class="btn btn-primary">
+                    + Create New Event
+                </a>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Events Schedule</h5>
+            <span class="badge bg-secondary">@Model.Count() Events</span>
+        </div>
+
+        <div class="card-body p-0">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <div class="fs-2 text-muted mb-2">📅</div>
+                    <h6 class="fw-bold text-muted">No Events Scheduled</h6>
+                    <p class="text-muted small mb-0">No events found in the system.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">ID</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Location</th>
+                                <th>Event Date</th>
+                                <th class="text-end pe-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-3 fw-semibold">
+                                        #@item.Id
+                                    </td>
+                                    <td class="fw-semibold">
+                                        @item.Title
+                                    </td>
+                                    <td>
+                                        <div class="text-truncate" style="max-width: 250px;" title="@item.Description">
+                                            @item.Description
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @item.Location
+                                    </td>
+                                    <td>
+                                        @item.EventDate.ToString("dd MMM yyyy, hh:mm tt")
+                                    </td>
+                                    <td class="text-end pe-3">
+                                        <div class="btn-group btn-group-sm">
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <a asp-action="Registrations"
+                                                   asp-route-id="@item.Id"
+                                                   class="btn btn-outline-info">
+                                                    Registrations
+                                                </a>
+                                            }
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-outline-primary">
+                                                Details
+                                            </a>
+                                            @if (User.IsInRole("Admin"))
+                                            {
+                                                <a asp-action="Edit"
+                                                   asp-route-id="@item.Id"
+                                                   class="btn btn-outline-secondary">
+                                                    Edit
+                                                </a>
+                                                <a asp-action="Delete"
+                                                   asp-route-id="@item.Id"
+                                                   class="btn btn-outline-danger">
+                                                    Delete
+                                                </a>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

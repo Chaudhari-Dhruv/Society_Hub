@@ -1,42 +1,57 @@
-﻿@{
-    ViewData["Title"] = "Login";
+@{
+    ViewData["Title"] = "Account Login";
 }
 
-<h1>Login</h1>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3 text-center">
+                    <h4 class="fw-bold mb-0">Sign In</h4>
+                    <small>Access your Society Hub account</small>
+                </div>
 
-<form asp-action="Login" method="post">
+                <div class="card-body p-4">
+                    <form asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
 
-    @Html.AntiForgeryToken()
+                        <div asp-validation-summary="All" class="text-danger small mb-3"></div>
 
-    <div asp-validation-summary="All"></div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   placeholder="name@example.com"
+                                   required />
+                        </div>
 
-    <div>
-        <label>Email</label>
-        <input type="email"
-               name="email"
-               required />
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Password</label>
+                            <input type="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Enter your password"
+                                   required />
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary py-2">
+                                Sign In
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="text-center border-top pt-3 mt-3">
+                        <p class="text-muted small mb-0">
+                            Need an account?
+                            <a asp-action="Register" class="text-decoration-none fw-semibold">
+                                Register (Admin, Resident, Security Guard)
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Password</label>
-        <input type="password"
-               name="password"
-               required />
-    </div>
-
-    <br />
-
-    <button type="submit">
-        Login
-    </button>
-
-</form>
-
-<br />
-
-<p>
-    Don't have an account?
-    <a asp-action="Register">Register here</a>
-</p>
+</div>

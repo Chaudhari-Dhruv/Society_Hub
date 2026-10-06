@@ -1,83 +1,417 @@
-﻿@model Society_hub.Models.ViewModels.ResidentDashboardViewModel
+@model Society_hub.Models.ViewModels.ResidentDashboardViewModel
 
-<h1>Resident Dashboard</h1>
+@{
+    ViewData["Title"] = "Resident Dashboard";
+}
 
-<hr />
+<div class="container-fluid">
 
-<h2>Profile Summary</h2>
+    <!-- ========================= -->
+    <!-- HEADER -->
+    <!-- ========================= -->
 
-<p>
-    <strong>Name:</strong>
-    @Model.Resident?.FullName
-</p>
+    <div class="mb-4">
+        <h1 class="fw-bold">Resident Dashboard</h1>
 
-<p>
-    <strong>Email:</strong>
-    @Model.Resident?.Email
-</p>
+        <p class="text-muted">
+            Welcome back, @Model.Resident?.FullName
+        </p>
+    </div>
 
-<p>
-    <strong>Phone:</strong>
-    @Model.Resident?.Phone
-</p>
 
-<p>
-    <strong>Flat:</strong>
-    @Model.Resident?.Flat?.FlatNumber
-</p>
+    <!-- ========================= -->
+    <!-- PROFILE CARD -->
+    <!-- ========================= -->
 
-<p>
-    <strong>Apartment Block:</strong>
-    @Model.Resident?.Flat?.ApartmentBlock?.BlockName
-</p>
+    <div class="card shadow-sm border-0 mb-4">
 
-<hr />
+        <div class="card-body">
 
-<h2>Complaints</h2>
+            <h4 class="fw-bold mb-4">
+                My Profile
+            </h4>
 
-<p>
-    Total Complaints:
-    <strong>@Model.ComplaintCount</strong>
-</p>
+            <div class="row">
 
-<p>
-    Pending Complaints:
-    <strong>@Model.PendingComplaintCount</strong>
-</p>
+                <div class="col-md-4 mb-3">
 
-<hr />
+                    <small class="text-muted">
+                        Full Name
+                    </small>
 
-<h2>Visitors</h2>
+                    <div class="fw-semibold">
+                        @Model.Resident?.FullName
+                    </div>
 
-<p>
-    Upcoming Visitors:
-    <strong>@Model.UpcomingVisitorCount</strong>
-</p>
+                </div>
 
-<hr />
 
-<h2>Notices</h2>
+                <div class="col-md-4 mb-3">
 
-<p>
-    Available Notices:
-    <strong>@Model.NoticeCount</strong>
-</p>
+                    <small class="text-muted">
+                        Email
+                    </small>
 
-<a asp-controller="Notice"
-   asp-action="ResidentNotices">
-    View Notices
-</a>
+                    <div class="fw-semibold">
+                        @Model.Resident?.Email
+                    </div>
 
-<hr />
+                </div>
 
-<h2>Events</h2>
 
-<p>
-    Upcoming Events:
-    <strong>@Model.UpcomingEventCount</strong>
-</p>
+                <div class="col-md-4 mb-3">
 
-<a asp-controller="Event"
-   asp-action="ResidentEvents">
-    View Events
-</a>
+                    <small class="text-muted">
+                        Phone
+                    </small>
+
+                    <div class="fw-semibold">
+                        @Model.Resident?.Phone
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+                        Flat Number
+                    </small>
+
+                    <div class="fw-semibold">
+                        @(Model.Resident?.Flat?.FlatNumber ?? "Not Assigned")
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <small class="text-muted">
+                        Apartment Block
+                    </small>
+
+                    <div class="fw-semibold">
+                        @(Model.Resident?.Flat?.ApartmentBlock?.BlockName ?? "Not Assigned")
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- STATISTICS -->
+    <!-- ========================= -->
+
+    <h4 class="fw-bold mb-3">
+        Overview
+    </h4>
+
+
+    <div class="row g-4 mb-4">
+
+        <!-- Total Complaints -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+                            <p class="text-muted mb-1">
+                                Total Complaints
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @Model.ComplaintCount
+                            </h2>
+                        </div>
+
+                        <div class="text-primary fs-2">
+                            📝
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <a asp-controller="Complaint"
+                       asp-action="MyComplaints"
+                       class="text-decoration-none">
+                        View My Complaints →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Pending Complaints -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Pending Complaints
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @Model.PendingComplaintCount
+                            </h2>
+
+                        </div>
+
+                        <div class="text-warning fs-2">
+                            ⚠️
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <a asp-controller="Complaint"
+                       asp-action="CreateForResident"
+                       class="text-decoration-none">
+                        Submit Complaint →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Upcoming Visitors -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Upcoming Visitors
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @Model.UpcomingVisitorCount
+                            </h2>
+
+                        </div>
+
+                        <div class="text-success fs-2">
+                            👥
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <a asp-controller="Visitor"
+                       asp-action="MyVisitors"
+                       class="text-decoration-none">
+                        View Visitors →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Notices -->
+
+        <div class="col-md-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <p class="text-muted mb-1">
+                                Notices
+                            </p>
+
+                            <h2 class="fw-bold mb-0">
+                                @Model.NoticeCount
+                            </h2>
+
+                        </div>
+
+                        <div class="text-info fs-2">
+                            📢
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <a asp-controller="Notice"
+                       asp-action="ResidentNotices"
+                       class="text-decoration-none">
+                        View Notices →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- EVENTS -->
+    <!-- ========================= -->
+
+    <div class="row g-4">
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <h5 class="fw-bold">
+                                Upcoming Events
+                            </h5>
+
+                            <p class="text-muted mb-0">
+                                Events happening in the society
+                            </p>
+
+                        </div>
+
+                        <div class="fs-2">
+                            📅
+                        </div>
+
+                    </div>
+
+                    <hr />
+
+                    <div class="text-center py-3">
+
+                        <h2 class="fw-bold">
+                            @Model.UpcomingEventCount
+                        </h2>
+
+                        <p class="text-muted">
+                            Upcoming Events
+                        </p>
+
+                        <a asp-controller="Event"
+                           asp-action="ResidentEvents"
+                           class="btn btn-primary">
+                            View Events
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- QUICK ACTIONS -->
+        <!-- ========================= -->
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm h-100">
+
+                <div class="card-body">
+
+                    <h5 class="fw-bold">
+                        Quick Actions
+                    </h5>
+
+                    <p class="text-muted">
+                        Frequently used resident services
+                    </p>
+
+                    <hr />
+
+                    <div class="d-grid gap-2">
+
+                        <a asp-controller="Complaint"
+                           asp-action="CreateForResident"
+                           class="btn btn-outline-primary text-start">
+                            📝 &nbsp; Submit a Complaint
+                        </a>
+
+                        <a asp-controller="Visitor"
+                           asp-action="CreateForResident"
+                           class="btn btn-outline-success text-start">
+                            👥 &nbsp; Register a Visitor
+                        </a>
+
+                        <a asp-controller="MaintenanceBill"
+                           asp-action="MyBills"
+                           class="btn btn-outline-warning text-start">
+                            💰 &nbsp; My Bills
+                        </a>
+
+                        <a asp-controller="MaintenanceBill"
+                           asp-action="PaymentHistory"
+                           class="btn btn-outline-info text-start">
+                            🧾 &nbsp; Payment History
+                        </a>
+
+                        <a asp-controller="Notice"
+                           asp-action="ResidentNotices"
+                           class="btn btn-outline-secondary text-start">
+                            📢 &nbsp; Society Notices
+                        </a>
+
+                        <a asp-controller="Event"
+                           asp-action="ResidentEvents"
+                           class="btn btn-outline-dark text-start">
+                            📅 &nbsp; Society Events
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

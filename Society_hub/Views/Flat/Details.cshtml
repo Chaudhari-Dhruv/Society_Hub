@@ -1,22 +1,56 @@
-﻿@model Society_hub.Models.Flat
+@model Society_hub.Models.Flat
 
-<h1>Flat Details</h1>
+@{
+    ViewData["Title"] = "Flat Details - " + Model.FlatNumber;
+}
 
-<p>
-    <strong>Id:</strong> @Model.Id
-</p>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0">Flat Details</h4>
+                    <span class="badge bg-light text-primary">#@Model.Id</span>
+                </div>
 
-<p>
-    <strong>Flat Number:</strong> @Model.FlatNumber
-</p>
+                <div class="card-body p-4">
+                    <dl class="row mb-4">
+                        <dt class="col-sm-5 text-muted">Flat Number:</dt>
+                        <dd class="col-sm-7 fw-bold fs-5">Flat @Model.FlatNumber</dd>
 
-<p>
-    <strong>Floor Number:</strong> @Model.FloorNumber
-</p>
+                        <dt class="col-sm-5 text-muted">Floor Number:</dt>
+                        <dd class="col-sm-7">Floor @Model.FloorNumber</dd>
 
-<p>
-    <strong>Occupied:</strong> @Model.IsOccupied
-</p>
+                        <dt class="col-sm-5 text-muted">Apartment Block:</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge bg-light text-dark border">
+                                @(Model.ApartmentBlock?.BlockName ?? "Not Assigned")
+                            </span>
+                        </dd>
 
-<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-<a asp-action="Index">Back to List</a>
+                        <dt class="col-sm-5 text-muted">Occupancy Status:</dt>
+                        <dd class="col-sm-7">
+                            @if (Model.IsOccupied)
+                            {
+                                <span class="badge bg-success">Occupied</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-warning text-dark">Vacant</span>
+                            }
+                        </dd>
+                    </dl>
+
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            Edit Flat
+                        </a>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Back to Flats
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

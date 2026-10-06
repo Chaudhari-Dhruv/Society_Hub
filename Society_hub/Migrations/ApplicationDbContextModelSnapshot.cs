@@ -473,6 +473,9 @@ namespace Society_hub.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -480,7 +483,7 @@ namespace Society_hub.Migrations
                     b.Property<int>("FamilyMembers")
                         .HasColumnType("int");
 
-                    b.Property<int>("FlatId")
+                    b.Property<int?>("FlatId")
                         .HasColumnType("int");
 
                     b.Property<string>("FullName")
@@ -496,6 +499,8 @@ namespace Society_hub.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.HasIndex("FlatId");
 
                     b.ToTable("Residents");
@@ -508,6 +513,9 @@ namespace Society_hub.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -529,6 +537,8 @@ namespace Society_hub.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("SecurityGuards");
                 });
@@ -692,13 +702,26 @@ namespace Society_hub.Migrations
 
             modelBuilder.Entity("Society_hub.Models.Resident", b =>
                 {
+                    b.HasOne("Society_hub.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("Society_hub.Models.Flat", "Flat")
                         .WithMany("Residents")
-                        .HasForeignKey("FlatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FlatId");
+
+                    b.Navigation("ApplicationUser");
 
                     b.Navigation("Flat");
+                });
+
+            modelBuilder.Entity("Society_hub.Models.SecurityGuard", b =>
+                {
+                    b.HasOne("Society_hub.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("Society_hub.Models.Visitor", b =>

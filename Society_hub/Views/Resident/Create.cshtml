@@ -1,60 +1,75 @@
-﻿@model Society_hub.Models.Resident
+@model Society_hub.Models.Resident
 
-<h1>Create Resident</h1>
+@{
+    ViewData["Title"] = "Add Resident";
+}
 
-<form asp-action="Create" method="post">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Add New Resident</h4>
+                    <small>Register resident and allocate an apartment flat</small>
+                </div>
 
-    <div>
-        <label>Full Name</label>
-        <input asp-for="FullName" />
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="FullName" class="form-label fw-semibold">Full Name</label>
+                            <input asp-for="FullName" class="form-control" placeholder="e.g. John Doe" required />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label fw-semibold">Email Address</label>
+                            <input asp-for="Email" type="email" class="form-control" placeholder="e.g. resident@example.com" required />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label fw-semibold">Contact Phone</label>
+                            <input asp-for="Phone" class="form-control" placeholder="e.g. +91 9876543210" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FamilyMembers" class="form-label fw-semibold">Number of Family Members</label>
+                            <input asp-for="FamilyMembers" type="number" min="1" class="form-control" value="1" required />
+                            <span asp-validation-for="FamilyMembers" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="FlatId" class="form-label fw-semibold">Assign Flat</label>
+                            <select asp-for="FlatId" class="form-select">
+                                <option value="">-- Optional: Assign Flat Later --</option>
+                                @if (ViewBag.Flats != null)
+                                {
+                                    @foreach (var flat in ViewBag.Flats)
+                                    {
+                                        <option value="@flat.Id">
+                                            Flat @flat.FlatNumber (@flat.ApartmentBlock?.BlockName)
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="FlatId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Save Resident
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Email</label>
-        <input asp-for="Email" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Phone</label>
-        <input asp-for="Phone" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Family Members</label>
-        <input asp-for="FamilyMembers" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Flat</label>
-
-        <select asp-for="FlatId">
-
-            <option value="">-- Select Flat --</option>
-
-            @foreach (var flat in ViewBag.Flats)
-            {
-                <option value="@flat.Id">
-                    @flat.FlatNumber - @flat.ApartmentBlock?.BlockName
-                </option>
-            }
-
-        </select>
-    </div>
-
-    <br />
-
-    <button type="submit">Create</button>
-
-</form>
-
-<br />
-
-<a asp-action="Index">Back to List</a>
+</div>

@@ -1,33 +1,71 @@
-﻿@model IEnumerable<Society_hub.Models.Notice>
+@model IEnumerable<Society_hub.Models.Notice>
 
-<h1>Society Notices</h1>
-
-@if (!Model.Any())
-{
-    <p>No notices are available.</p>
+@{
+    ViewData["Title"] = "Society Notices";
 }
-else
-{
-    foreach (var notice in Model)
+
+<div class="container-fluid py-3">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Society Notices</h1>
+            <p class="text-muted mb-0">
+                Official society announcements, circulars, and updates
+            </p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
     {
-        <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
-
-            <h2>@notice.Title</h2>
-
-            <p>
-                @notice.Content
-            </p>
-
-            <p>
-                <strong>Published:</strong>
-                @notice.PublishedDate
-            </p>
-
-            <a asp-action="Details"
-               asp-route-id="@notice.Id">
-                View Details
-            </a>
-
+        <div class="card shadow-sm border-0 text-center py-5">
+            <div class="card-body">
+                <div class="fs-2 text-muted mb-2">📢</div>
+                <h6 class="fw-bold text-muted">No Notices Available</h6>
+                <p class="text-muted small mb-0">There are no notices published at this moment.</p>
+            </div>
         </div>
     }
-}
+    else
+    {
+        <div class="row g-4">
+            @foreach (var notice in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-0 h-100 d-flex flex-column justify-content-between border-top border-primary border-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge bg-info text-dark">Circular</span>
+                                <small class="text-muted">
+                                    @(notice.PublishedDate?.ToString("dd MMM yyyy") ?? "-")
+                                </small>
+                            </div>
+
+                            <h5 class="fw-bold card-title mb-2">
+                                @notice.Title
+                            </h5>
+
+                            <p class="card-text text-muted small">
+                                @notice.Content
+                            </p>
+                        </div>
+
+                        <div class="card-footer bg-white border-0 pt-0 pb-3">
+                            <a asp-action="Details"
+                               asp-route-id="@notice.Id"
+                               class="btn btn-outline-primary btn-sm w-100">
+                                View Full Notice
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="ResidentDashboard" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Resident Dashboard
+        </a>
+    </div>
+
+</div>

@@ -1,39 +1,108 @@
-﻿@model IEnumerable<Society_hub.Models.Flat>
+@model IEnumerable<Society_hub.Models.Flat>
 
-<h1>Flat List</h1>
+@{
+    ViewData["Title"] = "Flats Management";
+}
 
-<p>
-    <a asp-action="Create">Create New Flat</a>
-</p>
+<div class="container-fluid py-3">
 
-<table border="1" cellpadding="10">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Flat Number</th>
-            <th>Floor</th>
-            <th>Occupied</th>
-            <th>Apartment Block</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Flats Management</h1>
+            <p class="text-muted mb-0">
+                Manage society residential flats, occupancy status, and block assignments
+            </p>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-primary">
+                + Create New Flat
+            </a>
+        </div>
+    </div>
 
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.FlatNumber</td>
-                <td>@item.FloorNumber</td>
-                <td>@item.IsOccupied</td>
-                <td>@item.ApartmentBlock?.BlockName</td>
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Society Flats Directory</h5>
+            <span class="badge bg-secondary">@Model.Count() Flats</span>
+        </div>
 
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        <div class="card-body p-0">
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <div class="fs-2 text-muted mb-2">🏢</div>
+                    <h6 class="fw-bold text-muted">No Flats Created</h6>
+                    <p class="text-muted small mb-0">Create your first flat to assign residents.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">ID</th>
+                                <th>Flat Number</th>
+                                <th>Floor</th>
+                                <th>Apartment Block</th>
+                                <th>Occupancy Status</th>
+                                <th class="text-end pe-3">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="ps-3 fw-semibold">
+                                        #@item.Id
+                                    </td>
+                                    <td class="fw-bold">
+                                        Flat @item.FlatNumber
+                                    </td>
+                                    <td>
+                                        Floor @item.FloorNumber
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-light text-dark border">
+                                            @(item.ApartmentBlock?.BlockName ?? "Not Assigned")
+                                        </span>
+                                    </td>
+                                    <td>
+                                        @if (item.IsOccupied)
+                                        {
+                                            <span class="badge bg-success">Occupied</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Vacant</span>
+                                        }
+                                    </td>
+                                    <td class="text-end pe-3">
+                                        <div class="btn-group btn-group-sm">
+                                            <a asp-action="Details"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-outline-primary">
+                                                Details
+                                            </a>
+                                            <a asp-action="Edit"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-outline-secondary">
+                                                Edit
+                                            </a>
+                                            <a asp-action="Delete"
+                                               asp-route-id="@item.Id"
+                                               class="btn btn-outline-danger">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

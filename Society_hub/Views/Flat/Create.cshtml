@@ -1,51 +1,69 @@
-﻿@model Society_hub.Models.Flat
+@model Society_hub.Models.Flat
 
-<h1>Create Flat</h1>
+@{
+    ViewData["Title"] = "Create Flat";
+}
 
-<form asp-action="Create" method="post">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Create New Flat</h4>
+                    <small>Add a residential unit to a block</small>
+                </div>
 
-    <div>
-        <label>Flat Number</label>
-        <input asp-for="FlatNumber" />
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="FlatNumber" class="form-label fw-semibold">Flat Number</label>
+                            <input asp-for="FlatNumber" class="form-control" placeholder="e.g. 101, A-204" required />
+                            <span asp-validation-for="FlatNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="FloorNumber" class="form-label fw-semibold">Floor Number</label>
+                            <input asp-for="FloorNumber" type="number" class="form-control" placeholder="e.g. 1, 2" required />
+                            <span asp-validation-for="FloorNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ApartmentBlockId" class="form-label fw-semibold">Apartment Block</label>
+                            <select asp-for="ApartmentBlockId" class="form-select" required>
+                                <option value="">-- Select Apartment Block --</option>
+                                @if (ViewBag.ApartmentBlocks != null)
+                                {
+                                    @foreach (var block in ViewBag.ApartmentBlocks)
+                                    {
+                                        <option value="@block.Id">@block.BlockName</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="ApartmentBlockId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4 form-check form-switch">
+                            <input asp-for="IsOccupied" class="form-check-input" type="checkbox" id="isOccupiedCheck" />
+                            <label class="form-check-label fw-semibold" for="isOccupiedCheck">
+                                Currently Occupied
+                            </label>
+                            <span asp-validation-for="IsOccupied" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Create Flat
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Floor Number</label>
-        <input asp-for="FloorNumber" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Is Occupied</label>
-        <input asp-for="IsOccupied" type="checkbox" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Apartment Block</label>
-
-        <select asp-for="ApartmentBlockId">
-            <option value="">-- Select Block --</option>
-
-            @foreach (var block in ViewBag.ApartmentBlocks)
-            {
-                <option value="@block.Id">
-                    @block.BlockName
-                </option>
-            }
-        </select>
-    </div>
-
-    <br />
-
-    <button type="submit">Create</button>
-
-</form>
-
-<br />
-
-<a asp-action="Index">Back to List</a>
+</div>

@@ -1,46 +1,86 @@
-﻿@model Society_hub.Models.Visitor
+@model Society_hub.Models.Visitor
 
-<h1>Visitor Details</h1>
+@{
+    ViewData["Title"] = "Visitor Details - " + Model.VisitorName;
+}
 
-<p>
-    <strong>Id:</strong> @Model.Id
-</p>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0">Visitor Details</h4>
+                    <span class="badge bg-light text-primary">#@Model.Id</span>
+                </div>
 
-<p>
-    <strong>Visitor Name:</strong> @Model.VisitorName
-</p>
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h4 class="fw-bold mb-1">@Model.VisitorName</h4>
+                            <span class="text-muted">📞 @Model.Phone</span>
+                        </div>
+                        <div>
+                            @if (Model.Status == "Expected")
+                            {
+                                <span class="badge bg-warning text-dark px-3 py-2">Expected</span>
+                            }
+                            else if (Model.Status == "Checked-In")
+                            {
+                                <span class="badge bg-success px-3 py-2">Checked-In</span>
+                            }
+                            else if (Model.Status == "Checked-Out")
+                            {
+                                <span class="badge bg-secondary px-3 py-2">Checked-Out</span>
+                            }
+                        </div>
+                    </div>
 
-<p>
-    <strong>Phone:</strong> @Model.Phone
-</p>
+                    <dl class="row mb-4">
+                        <dt class="col-sm-5 text-muted">Purpose of Visit:</dt>
+                        <dd class="col-sm-7 fw-semibold">@(string.IsNullOrEmpty(Model.Purpose) ? "-" : Model.Purpose)</dd>
 
-<p>
-    <strong>Purpose:</strong> @Model.Purpose
-</p>
+                        <dt class="col-sm-5 text-muted">Scheduled Visit Date:</dt>
+                        <dd class="col-sm-7">@Model.VisitDate.ToString("dd MMMM yyyy, hh:mm tt")</dd>
 
-<p>
-    <strong>Visit Date:</strong> @Model.VisitDate.ToShortDateString()
-</p>
+                        <dt class="col-sm-5 text-muted">Resident Host:</dt>
+                        <dd class="col-sm-7">@(Model.Resident?.FullName ?? "N/A")</dd>
 
-<p>
-    <strong>Status:</strong> @Model.Status
-</p>
+                        <dt class="col-sm-5 text-muted">Flat Number:</dt>
+                        <dd class="col-sm-7">
+                            <span class="badge bg-light text-dark border">
+                                Flat @(Model.Resident?.Flat?.FlatNumber ?? "N/A")
+                            </span>
+                        </dd>
 
-<p>
-    <strong>Resident:</strong> @Model.Resident?.FullName
-</p>
+                        <dt class="col-sm-5 text-muted">Gate Entry Time:</dt>
+                        <dd class="col-sm-7">@(Model.EntryTime?.ToString("dd MMM yyyy, hh:mm tt") ?? "Not Entered")</dd>
 
-<p>
-    <strong>Flat:</strong> @Model.Resident?.Flat?.FlatNumber
-</p>
+                        <dt class="col-sm-5 text-muted">Gate Exit Time:</dt>
+                        <dd class="col-sm-7">@(Model.ExitTime?.ToString("dd MMM yyyy, hh:mm tt") ?? "Not Exited")</dd>
+                    </dl>
 
-<p>
-    <strong>Entry Time:</strong> @Model.EntryTime
-</p>
-
-<p>
-    <strong>Exit Time:</strong> @Model.ExitTime
-</p>
-
-<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-<a asp-action="Index">Back to List</a>
+                    <div class="d-flex gap-2 border-top pt-3">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                                Edit Visitor
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                                Delete
+                            </a>
+                        }
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Back to List
+                        </a>
+                        @if (User.IsInRole("SecurityGuard"))
+                        {
+                            <a asp-controller="SecurityGuard" asp-action="Dashboard" class="btn btn-outline-primary ms-auto">
+                                Guard Dashboard
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

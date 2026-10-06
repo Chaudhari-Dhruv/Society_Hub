@@ -1,8 +1,104 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+@{
+    ViewData["Title"] = "Welcome to Society Hub";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-4">
+
+    <!-- Hero Section -->
+    <div class="p-5 mb-5 hero-banner">
+        <div class="container-fluid py-3 position-relative" style="z-index: 2;">
+            <div class="d-inline-block mb-3">
+                <span class="badge bg-primary px-3 py-2 text-uppercase fw-semibold" style="letter-spacing: 0.08em; font-size: 0.78rem;">
+                    Residential Society Management Portal
+                </span>
+            </div>
+
+            <h1 class="display-4 fw-extrabold text-white mb-3" style="letter-spacing: -0.03em;">
+                Welcome to <span style="background: linear-gradient(135deg, #60a5fa 0%, #38bdf8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Society Hub</span>
+            </h1>
+
+            <p class="col-md-9 fs-5 text-secondary mb-4" style="line-height: 1.6;">
+                A next-generation, integrated residential society platform connecting society administration, flat residents, and security gate staff with real-time transparency.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="AdminDashboard" asp-action="Index" class="btn btn-primary btn-lg px-4 shadow">
+                            Go to Admin Dashboard →
+                        </a>
+                    }
+                    else if (User.IsInRole("Resident"))
+                    {
+                        <a asp-controller="ResidentDashboard" asp-action="Index" class="btn btn-primary btn-lg px-4 shadow">
+                            Go to Resident Dashboard →
+                        </a>
+                    }
+                    else if (User.IsInRole("SecurityGuard"))
+                    {
+                        <a asp-controller="SecurityGuard" asp-action="Dashboard" class="btn btn-primary btn-lg px-4 shadow">
+                            Go to Security Dashboard →
+                        </a>
+                    }
+                }
+                else
+                {
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg px-4 shadow">
+                        Sign In to Portal
+                    </a>
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary btn-lg px-4">
+                        Register Account
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Overview -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card h-100 p-2">
+                <div class="card-body p-4">
+                    <div class="d-inline-flex p-3 rounded-3 mb-3" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
+                        <span class="fs-2">🏢</span>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2">Society Administration</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.6;">
+                        Complete oversight of apartment blocks, flat directories, resident allocations, security guard staffing, and society broadcasts.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 p-2">
+                <div class="card-body p-4">
+                    <div class="d-inline-flex p-3 rounded-3 mb-3" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3);">
+                        <span class="fs-2">👤</span>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2">Resident Portal</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.6;">
+                        Track maintenance bills, register guests for instant gate pass verification, lodge complaints, and RSVP for community events.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 p-2">
+                <div class="card-body p-4">
+                    <div class="d-inline-flex p-3 rounded-3 mb-3" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3);">
+                        <span class="fs-2">🛡️</span>
+                    </div>
+                    <h5 class="fw-bold text-white mb-2">Gate Security Operations</h5>
+                    <p class="text-secondary small mb-0" style="line-height: 1.6;">
+                        Live visitor check-in, real-time departure logs, gate authorization checks, and duty shift management.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

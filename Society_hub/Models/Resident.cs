@@ -14,14 +14,24 @@
 
         public int FamilyMembers { get; set; }
 
-        public int FlatId { get; set; }
+        // Identity User Relationship
+        public string? ApplicationUserId { get; set; }
+
+        public ApplicationUser? ApplicationUser { get; set; }
+
+        // Flat Relationship
+        public int? FlatId { get; set; }
+
         public Flat? Flat { get; set; }
 
-        public ICollection<Visitor> Visitors { get; set; } = new List<Visitor>();
+        // Other Relationships
+        public ICollection<Visitor> Visitors { get; set; }
+            = new List<Visitor>();
 
-        public ICollection<Complaint> Complaints { get; set; } = new List<Complaint>();
+        public ICollection<Complaint> Complaints { get; set; }
+            = new List<Complaint>();
 
-        public ICollection<EventRegistration> EventRegistrations { get; set; } =
-            new List<EventRegistration>();
+        public ICollection<EventRegistration> EventRegistrations { get; set; }
+            = new List<EventRegistration>();
     }
 }

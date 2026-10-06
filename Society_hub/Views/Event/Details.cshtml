@@ -1,86 +1,151 @@
-﻿@model Society_hub.Models.Event
+@model Society_hub.Models.Event
 
-<h1>Event Details</h1>
-
-<p>
-    <strong>Id:</strong>
-    @Model.Id
-</p>
-
-<p>
-    <strong>Title:</strong>
-    @Model.Title
-</p>
-
-<p>
-    <strong>Description:</strong>
-    @Model.Description
-</p>
-
-<p>
-    <strong>Location:</strong>
-    @Model.Location
-</p>
-
-<p>
-    <strong>Event Date:</strong>
-    @Model.EventDate
-</p>
-
-<p>
-    <strong>Created Date:</strong>
-    @Model.CreatedDate
-</p>
-
-<h3>Registered Residents</h3>
-
-@if (Model.EventRegistrations != null &&
-     Model.EventRegistrations.Any())
-{
-    <ul>
-        @foreach (var registration in Model.EventRegistrations)
-        {
-            <li>
-                @registration.Resident?.FullName
-            </li>
-        }
-    </ul>
+@{
+    ViewData["Title"] = "Event Details - " + Model.Title;
+    bool isRegistered = Model.EventRegistrations != null && Model.EventRegistrations.Any();
 }
-else
-{
-    <p>No residents registered yet.</p>
-}
-<form asp-action="CancelRegistration"
-      asp-route-id="@Model.Id"
-      method="post">
 
-    @Html.AntiForgeryToken()
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0">Event Details</h4>
+                    <span class="badge bg-light text-primary">#@Model.Id</span>
+                </div>
 
-    <button type="submit">
-        Cancel My Registration
-    </button>
+                <div class="card-body p-4">
+                    <h2 class="fw-bold mb-2">@Model.Title</h2>
+                    <p class="text-muted fs-6 mb-4">@Model.Description</p>
 
-</form>
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <div class="card bg-light border-0 p-3 h-100">
+                                <small class="text-muted d-block">📍 Location / Venue</small>
+                                <span class="fw-bold fs-6">@Model.Location</span>
+                            </div>
+                        </div>
 
-<form asp-action="Register"
-      asp-route-id="@Model.Id"
-      method="get">
+                        <div class="col-sm-6">
+                            <div class="card bg-light border-0 p-3 h-100">
+                                <small class="text-muted d-block">📅 Event Date &amp; Time</small>
+                                <span class="fw-bold fs-6">@Model.EventDate.ToString("dd MMMM yyyy, hh:mm tt")</span>
+                            </div>
+                        </div>
+                    </div>
 
-    <button type="submit">
-        Register for Event
-    </button>
+                    <!-- REGISTRATION SECTION FOR RESIDENTS -->
+                    @if (User.IsInRole("Resident"))
+                    {
+                        <div class="card border-0 bg-light p-3 mb-4">
+                            <h5 class="fw-bold mb-2">My Registration Status</h5>
+                            @if (isRegistered)
+                            {
+                                <div class="alert alert-success border-0 mb-3">
+                                    <i class="bi bi-check-circle-fill me-1"></i>
+                                    <strong>You are currently registered</strong> for this event.
+                                </div>
+                                <form asp-action="CancelRegistration"
+                                      asp-route-id="@Model.Id"
+                                      method="post"
+                                      class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to cancel your registration?');">
+                                        Cancel My Registration
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <p class="text-muted small mb-3">
+                                    You have not registered for this event yet. Reserve your spot by clicking below.
+                                </p>
+                                <form asp-action="Register"
+                                      asp-route-id="@Model.Id"
+                                      method="get"
+                                      class="d-inline">
+                                    <button type="submit" class="btn btn-success px-4">
+                                        Register for Event
+                                    </button>
+                                </form>
+                            }
+                        </div>
+                    }
 
-</form>
+                    <!-- REGISTRATIONS SECTION FOR ADMIN -->
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="border rounded p-3 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold mb-0">Registered Residents</h5>
+                                <span class="badge bg-primary">
+                                    @(Model.EventRegistrations?.Count ?? 0) Registrations
+                                </span>
+                            </div>
 
-<br />
+                            @if (Model.EventRegistrations != null && Model.EventRegistrations.Any())
+                            {
+                                <div class="table-responsive">
+                                    <table class="table table-sm table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Resident Name</th>
+                                                <th>Registration Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @{ int counter = 1; }
+                                            @foreach (var reg in Model.EventRegistrations)
+                                            {
+                                                <tr>
+                                                    <td>@counter</td>
+                                                    <td class="fw-semibold">@(reg.Resident?.FullName ?? "N/A")</td>
+                                                    <td>@reg.RegistrationDate.ToString("dd MMM yyyy, hh:mm tt")</td>
+                                                </tr>
+                                                counter++;
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted small mb-0">No residents registered yet for this event.</p>
+                            }
+                        </div>
+                    }
 
-<a asp-action="Edit"
-   asp-route-id="@Model.Id">
-    Edit
-</a>
+                    <!-- ACTIONS / NAVIGATION -->
+                    <div class="d-flex flex-wrap gap-2 pt-2 border-top">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                                Edit Event
+                            </a>
+                            <a asp-action="Registrations" asp-route-id="@Model.Id" class="btn btn-outline-info">
+                                View Full Registrations
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger">
+                                Delete Event
+                            </a>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Back to Events
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-action="ResidentEvents" class="btn btn-outline-secondary">
+                                ← Back to Events List
+                            </a>
+                            <a asp-controller="ResidentDashboard" asp-action="Index" class="btn btn-outline-dark">
+                                Resident Dashboard
+                            </a>
+                        }
+                    </div>
 
-|
-
-<a asp-action="Index">
-    Back to Events
-</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -13,5 +13,11 @@
         public string Shift { get; set; } = string.Empty;
 
         public bool IsActive { get; set; } = true;
+
+        // Identity User Foreign Key
+        public string? ApplicationUserId { get; set; }
+
+        // Navigation Property
+        public ApplicationUser? ApplicationUser { get; set; }
     }
 }

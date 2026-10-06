@@ -1,39 +1,79 @@
-﻿@model IEnumerable<Society_hub.Models.Event>
+@model IEnumerable<Society_hub.Models.Event>
 
-<h1>Upcoming Society Events</h1>
-
-@if (!Model.Any())
-{
-    <p>No upcoming events available.</p>
+@{
+    ViewData["Title"] = "Society Events";
 }
-else
-{
-    foreach (var item in Model)
+
+<div class="container-fluid py-3">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Upcoming Society Events</h1>
+            <p class="text-muted mb-0">
+                Community gatherings, meetings, and cultural celebrations
+            </p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
     {
-        <div style="border:1px solid #ccc; padding:15px; margin-bottom:15px;">
-
-            <h2>@item.Title</h2>
-
-            <p>
-                <strong>Description:</strong>
-                @item.Description
-            </p>
-
-            <p>
-                <strong>Location:</strong>
-                @item.Location
-            </p>
-
-            <p>
-                <strong>Date:</strong>
-                @item.EventDate
-            </p>
-
-            <a asp-action="Details"
-               asp-route-id="@item.Id">
-                View Event
-            </a>
-
+        <div class="card shadow-sm border-0 text-center py-5">
+            <div class="card-body">
+                <div class="fs-2 text-muted mb-2">📅</div>
+                <h6 class="fw-bold text-muted">No Upcoming Events</h6>
+                <p class="text-muted small mb-0">There are no upcoming events scheduled at this time. Check back later!</p>
+            </div>
         </div>
     }
-}
+    else
+    {
+        <div class="row g-4">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-0 h-100 d-flex flex-column justify-content-between">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge bg-primary px-2 py-1">Community Event</span>
+                                <small class="text-muted">
+                                    @item.EventDate.ToString("dd MMM yyyy")
+                                </small>
+                            </div>
+
+                            <h5 class="fw-bold card-title mb-2">
+                                @item.Title
+                            </h5>
+
+                            <p class="card-text text-muted small mb-3">
+                                @item.Description
+                            </p>
+
+                            <div class="small mb-2 text-secondary">
+                                <strong>📍 Location:</strong> @item.Location
+                            </div>
+
+                            <div class="small mb-3 text-secondary">
+                                <strong>⏰ Time:</strong> @item.EventDate.ToString("hh:mm tt")
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-white border-0 pt-0 pb-3">
+                            <a asp-action="Details"
+                               asp-route-id="@item.Id"
+                               class="btn btn-outline-primary btn-sm w-100">
+                                View Details &amp; Registration
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="ResidentDashboard" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Resident Dashboard
+        </a>
+    </div>
+
+</div>

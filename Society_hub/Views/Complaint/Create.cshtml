@@ -1,60 +1,77 @@
-﻿@model Society_hub.Models.Complaint
+@model Society_hub.Models.Complaint
 
-<h1>Submit Complaint</h1>
+@{
+    ViewData["Title"] = "Submit Complaint";
+}
 
-<form asp-action="Create" method="post">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Submit Complaint</h4>
+                    <small>Log an issue or maintenance request for a resident</small>
+                </div>
 
-    <div>
-        <label>Title</label>
-        <input asp-for="Title" />
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold">Complaint Title</label>
+                            <input asp-for="Title" class="form-control" placeholder="e.g. Water Leakage in Kitchen" required />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Category" class="form-label fw-semibold">Category</label>
+                            <select asp-for="Category" class="form-select" required>
+                                <option value="">-- Select Category --</option>
+                                <option value="Water">Water</option>
+                                <option value="Electricity">Electricity</option>
+                                <option value="Cleaning">Cleaning</option>
+                                <option value="Maintenance">Maintenance</option>
+                                <option value="Security">Security</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <span asp-validation-for="Category" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ResidentId" class="form-label fw-semibold">Resident</label>
+                            <select asp-for="ResidentId" class="form-select" required>
+                                <option value="">-- Select Resident --</option>
+                                @if (ViewBag.Residents != null)
+                                {
+                                    @foreach (var resident in ViewBag.Residents)
+                                    {
+                                        <option value="@resident.Id">
+                                            @resident.FullName (Flat @(resident.Flat?.FlatNumber ?? "Unassigned"))
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="ResidentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Description" class="form-label fw-semibold">Description</label>
+                            <textarea asp-for="Description" class="form-control" rows="5" placeholder="Detailed description of the issue..." required></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Submit Complaint
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Description</label>
-        <textarea asp-for="Description"></textarea>
-    </div>
-
-    <br />
-
-    <div>
-        <label>Category</label>
-
-        <select asp-for="Category">
-            <option value="">-- Select Category --</option>
-            <option value="Water">Water</option>
-            <option value="Electricity">Electricity</option>
-            <option value="Cleaning">Cleaning</option>
-            <option value="Maintenance">Maintenance</option>
-            <option value="Security">Security</option>
-            <option value="Other">Other</option>
-        </select>
-    </div>
-
-    <br />
-
-    <div>
-        <label>Resident</label>
-
-        <select asp-for="ResidentId">
-            <option value="">-- Select Resident --</option>
-
-            @foreach (var resident in ViewBag.Residents)
-            {
-                <option value="@resident.Id">
-                    @resident.FullName - @resident.Flat?.FlatNumber
-                </option>
-            }
-        </select>
-    </div>
-
-    <br />
-
-    <button type="submit">Submit Complaint</button>
-
-</form>
-
-<br />
-
-<a asp-action="Index">Back to List</a>
+</div>

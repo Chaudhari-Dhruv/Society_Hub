@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Society_hub.Data;
@@ -5,6 +6,7 @@ using Society_hub.Models;
 
 namespace Society_hub.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ApartmentBlockController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,7 +18,9 @@ namespace Society_hub.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ApartmentBlocks.ToListAsync());
+            return View(
+                await _context.ApartmentBlocks.ToListAsync()
+            );
         }
 
         public async Task<IActionResult> Details(int id)
@@ -38,7 +42,8 @@ namespace Society_hub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(ApartmentBlock block)
+        public async Task<IActionResult> Create(
+            ApartmentBlock block)
         {
             if (ModelState.IsValid)
             {
@@ -53,7 +58,8 @@ namespace Society_hub.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var block = await _context.ApartmentBlocks.FindAsync(id);
+            var block = await _context.ApartmentBlocks
+                .FindAsync(id);
 
             if (block == null)
                 return NotFound();
@@ -63,7 +69,9 @@ namespace Society_hub.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ApartmentBlock block)
+        public async Task<IActionResult> Edit(
+            int id,
+            ApartmentBlock block)
         {
             if (id != block.Id)
                 return NotFound();
@@ -81,7 +89,8 @@ namespace Society_hub.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var block = await _context.ApartmentBlocks.FindAsync(id);
+            var block = await _context.ApartmentBlocks
+                .FindAsync(id);
 
             if (block == null)
                 return NotFound();
@@ -91,9 +100,11 @@ namespace Society_hub.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(
+            int id)
         {
-            var block = await _context.ApartmentBlocks.FindAsync(id);
+            var block = await _context.ApartmentBlocks
+                .FindAsync(id);
 
             if (block != null)
             {

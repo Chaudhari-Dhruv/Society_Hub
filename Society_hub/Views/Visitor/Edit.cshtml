@@ -1,74 +1,88 @@
-﻿@model Society_hub.Models.Visitor
+@model Society_hub.Models.Visitor
 
-<h1>Edit Visitor</h1>
+@{
+    ViewData["Title"] = "Edit Visitor - " + Model.VisitorName;
+}
 
-<form asp-action="Edit" method="post">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Edit Visitor Record</h4>
+                    <small>Update visitor schedule or status</small>
+                </div>
 
-    <input type="hidden" asp-for="Id" />
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="EntryTime" />
+                        <input type="hidden" asp-for="ExitTime" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-    <div>
-        <label>Visitor Name</label>
-        <input asp-for="VisitorName" />
+                        <div class="mb-3">
+                            <label asp-for="VisitorName" class="form-label fw-semibold">Visitor Name</label>
+                            <input asp-for="VisitorName" class="form-control" required />
+                            <span asp-validation-for="VisitorName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Phone" class="form-label fw-semibold">Contact Phone</label>
+                            <input asp-for="Phone" class="form-control" required />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Purpose" class="form-label fw-semibold">Purpose</label>
+                            <input asp-for="Purpose" class="form-control" required />
+                            <span asp-validation-for="Purpose" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VisitDate" class="form-label fw-semibold">Visit Date</label>
+                            <input asp-for="VisitDate" type="datetime-local" class="form-control" required />
+                            <span asp-validation-for="VisitDate" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Status" class="form-label fw-semibold">Status</label>
+                            <select asp-for="Status" class="form-select" required>
+                                <option value="Expected">Expected</option>
+                                <option value="Checked-In">Checked-In</option>
+                                <option value="Checked-Out">Checked-Out</option>
+                            </select>
+                            <span asp-validation-for="Status" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="ResidentId" class="form-label fw-semibold">Visiting Resident</label>
+                            <select asp-for="ResidentId" class="form-select" required>
+                                <option value="">-- Select Resident Host --</option>
+                                @if (ViewBag.Residents != null)
+                                {
+                                    @foreach (var resident in ViewBag.Residents)
+                                    {
+                                        <option value="@resident.Id">
+                                            @resident.FullName - Flat @(resident.Flat?.FlatNumber ?? "Unassigned")
+                                        </option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="ResidentId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Save Changes
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Phone</label>
-        <input asp-for="Phone" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Purpose</label>
-        <input asp-for="Purpose" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Visit Date</label>
-        <input asp-for="VisitDate" type="date" />
-    </div>
-
-    <br />
-
-    <div>
-        <label>Status</label>
-
-        <select asp-for="Status">
-            <option value="Expected">Expected</option>
-            <option value="Checked-In">Checked-In</option>
-            <option value="Checked-Out">Checked-Out</option>
-        </select>
-    </div>
-
-    <br />
-
-    <div>
-        <label>Resident</label>
-
-        <select asp-for="ResidentId">
-
-            <option value="">-- Select Resident --</option>
-
-            @foreach (var resident in ViewBag.Residents)
-            {
-                <option value="@resident.Id">
-                    @resident.FullName - @resident.Flat?.FlatNumber
-                </option>
-            }
-
-        </select>
-    </div>
-
-    <br />
-
-    <button type="submit">Save</button>
-
-</form>
-
-<br />
-
-<a asp-action="Index">Back to List</a>
+</div>

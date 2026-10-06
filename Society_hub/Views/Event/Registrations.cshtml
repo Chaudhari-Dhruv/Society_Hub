@@ -1,76 +1,101 @@
-﻿@model Society_hub.Models.Event
+@model Society_hub.Models.Event
 
-<h1>Event Registrations</h1>
-
-<h2>@Model.Title</h2>
-
-<p>
-    <strong>Event Date:</strong>
-    @Model.EventDate
-</p>
-
-<p>
-    <strong>Location:</strong>
-    @Model.Location
-</p>
-
-<hr />
-
-<h3>Registered Residents</h3>
-
-@if (Model.EventRegistrations != null &&
-     Model.EventRegistrations.Any())
-{
-    <table border="1" cellpadding="10">
-
-        <thead>
-            <tr>
-                <th>Registration Id</th>
-                <th>Resident Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Registration Date</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (var registration in Model.EventRegistrations)
-            {
-                <tr>
-                    <td>@registration.Id</td>
-
-                    <td>
-                        @registration.Resident?.FullName
-                    </td>
-
-                    <td>
-                        @registration.Resident?.Email
-                    </td>
-
-                    <td>
-                        @registration.Resident?.Phone
-                    </td>
-
-                    <td>
-                        @registration.RegistrationDate
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-    </table>
-}
-else
-{
-    <p>No residents have registered for this event yet.</p>
-}
-
-<br />
-
-<a asp-action="Index">
-    Back to Events
-</a>@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
 @{
+    ViewData["Title"] = "Event Registrations - " + Model.Title;
 }
+
+<div class="container-fluid py-3">
+
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4">
+        <div>
+            <h1 class="fw-bold mb-1">Event Registrations</h1>
+            <p class="text-muted mb-0">
+                Registered resident attendees for: <strong>@Model.Title</strong>
+            </p>
+        </div>
+        <div class="d-flex gap-2">
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm">
+                View Event Details
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                Back to Events
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <small class="text-muted d-block">Event Title</small>
+                    <span class="fw-bold">@Model.Title</span>
+                </div>
+                <div class="col-md-4">
+                    <small class="text-muted d-block">Scheduled Date</small>
+                    <span class="fw-bold">@Model.EventDate.ToString("dd MMMM yyyy, hh:mm tt")</span>
+                </div>
+                <div class="col-md-4">
+                    <small class="text-muted d-block">Location</small>
+                    <span class="fw-bold">@Model.Location</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+            <h5 class="fw-bold mb-0">Registered Residents</h5>
+            <span class="badge bg-primary">@(Model.EventRegistrations?.Count ?? 0) Total Registered</span>
+        </div>
+
+        <div class="card-body p-0">
+            @if (Model.EventRegistrations == null || !Model.EventRegistrations.Any())
+            {
+                <div class="text-center py-5">
+                    <div class="fs-2 text-muted mb-2">📋</div>
+                    <h6 class="fw-bold text-muted">No Registrations Yet</h6>
+                    <p class="text-muted small mb-0">No residents have registered for this event yet.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-3">Reg ID</th>
+                                <th>Resident Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th class="text-end pe-3">Registration Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var registration in Model.EventRegistrations)
+                            {
+                                <tr>
+                                    <td class="ps-3 fw-semibold">
+                                        #@registration.Id
+                                    </td>
+                                    <td class="fw-semibold">
+                                        @(registration.Resident?.FullName ?? "N/A")
+                                    </td>
+                                    <td>
+                                        @(registration.Resident?.Email ?? "N/A")
+                                    </td>
+                                    <td>
+                                        @(registration.Resident?.Phone ?? "N/A")
+                                    </td>
+                                    <td class="text-end pe-3 text-muted">
+                                        @registration.RegistrationDate.ToString("dd MMM yyyy, hh:mm tt")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+
+</div>

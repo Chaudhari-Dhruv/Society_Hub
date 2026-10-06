@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Society_hub.Data;
 using Society_hub.Models;
 
 namespace Society_hub.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class FlatController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -27,7 +29,9 @@ namespace Society_hub.Controllers
         // GET: Flat/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var flat = await _context.Flats.FindAsync(id);
+            var flat = await _context.Flats
+                .Include(f => f.ApartmentBlock)
+                .FirstOrDefaultAsync(f => f.Id == id);
 
             if (flat == null)
             {
@@ -38,9 +42,11 @@ namespace Society_hub.Controllers
         }
 
         // GET: Flat/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.ApartmentBlocks = _context.ApartmentBlocks.ToList();
+            ViewBag.ApartmentBlocks = await _context.ApartmentBlocks
+                .ToListAsync();
+
             return View();
         }
 
@@ -57,7 +63,8 @@ namespace Society_hub.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.ApartmentBlocks = _context.ApartmentBlocks.ToList();
+            ViewBag.ApartmentBlocks = await _context.ApartmentBlocks
+                .ToListAsync();
 
             return View(flat);
         }
@@ -65,7 +72,8 @@ namespace Society_hub.Controllers
         // GET: Flat/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            var flat = await _context.Flats.FindAsync(id);
+            var flat = await _context.Flats
+                .FindAsync(id);
 
             if (flat == null)
             {
@@ -78,7 +86,9 @@ namespace Society_hub.Controllers
         // POST: Flat/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Flat flat)
+        public async Task<IActionResult> Edit(
+            int id,
+            Flat flat)
         {
             if (id != flat.Id)
             {
@@ -99,7 +109,8 @@ namespace Society_hub.Controllers
         // GET: Flat/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            var flat = await _context.Flats.FindAsync(id);
+            var flat = await _context.Flats
+                .FindAsync(id);
 
             if (flat == null)
             {
@@ -114,7 +125,8 @@ namespace Society_hub.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var flat = await _context.Flats.FindAsync(id);
+            var flat = await _context.Flats
+                .FindAsync(id);
 
             if (flat != null)
             {

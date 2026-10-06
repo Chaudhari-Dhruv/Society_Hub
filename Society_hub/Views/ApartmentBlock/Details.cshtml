@@ -1,44 +1,59 @@
-﻿@model Society_hub.Models.ApartmentBlock
+@model Society_hub.Models.ApartmentBlock
 
-<h1>Apartment Block Details</h1>
-
-<p>
-    <strong>ID:</strong>
-    @Model.Id
-</p>
-
-<p>
-    <strong>Block Name:</strong>
-    @Model.BlockName
-</p>
-
-<p>
-    <strong>Total Flats:</strong>
-    @Model.TotalFlats
-</p>
-
-<h3>Flats</h3>
-
-@if (Model.Flats != null && Model.Flats.Any())
-{
-    <ul>
-        @foreach (var flat in Model.Flats)
-        {
-            <li>
-                Flat: @flat.FlatNumber
-            </li>
-        }
-    </ul>
-}
-else
-{
-    <p>No flats added yet.</p>
+@{
+    ViewData["Title"] = "Block Details - " + Model.BlockName;
 }
 
-<br />
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                    <h4 class="fw-bold mb-0">Apartment Block Details</h4>
+                    <span class="badge bg-light text-primary">#@Model.Id</span>
+                </div>
 
-<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                <div class="card-body p-4">
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Block Name</small>
+                            <span class="fw-bold fs-5">@Model.BlockName</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <small class="text-muted d-block">Configured Capacity</small>
+                            <span class="fw-bold fs-5 text-info">@Model.TotalFlats Flats</span>
+                        </div>
+                    </div>
 
-|
+                    <div class="border rounded p-3 mb-4">
+                        <h6 class="fw-bold mb-3">Flats in @Model.BlockName</h6>
+                        @if (Model.Flats != null && Model.Flats.Any())
+                        {
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (var flat in Model.Flats)
+                                {
+                                    <span class="badge bg-light text-dark border p-2">
+                                        Flat @flat.FlatNumber
+                                    </span>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted small mb-0">No flats added to this block yet.</p>
+                        }
+                    </div>
 
-<a asp-action="Index">Back to List</a>
+                    <div class="d-flex gap-2">
+                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                            Edit Block
+                        </a>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            Back to Blocks
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

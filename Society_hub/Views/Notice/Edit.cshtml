@@ -1,34 +1,49 @@
-﻿@model Society_hub.Models.Notice
+@model Society_hub.Models.Notice
 
-<h1>Edit Notice</h1>
+@{
+    ViewData["Title"] = "Edit Notice";
+}
 
-<form asp-action="Edit" method="post">
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="fw-bold mb-0">Edit Notice</h4>
+                    <small>Update announcement content</small>
+                </div>
 
-    <input type="hidden"
-           asp-for="Id" />
+                <div class="card-body p-4">
+                    <form asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="CreatedDate" />
+                        <input type="hidden" asp-for="PublishedDate" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-    <div>
-        <label>Title</label>
-        <input asp-for="Title" />
+                        <div class="mb-3">
+                            <label asp-for="Title" class="form-label fw-semibold">Notice Title</label>
+                            <input asp-for="Title" class="form-control" required />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Content" class="form-label fw-semibold">Notice Content</label>
+                            <textarea asp-for="Content" class="form-control" rows="6" required></textarea>
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary px-4">
+                                Update Notice
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <br />
-
-    <div>
-        <label>Content</label>
-        <textarea asp-for="Content"></textarea>
-    </div>
-
-    <br />
-
-    <button type="submit">
-        Save Changes
-    </button>
-
-</form>
-
-<br />
-
-<a asp-action="Index">
-    Back to Notice Board
-</a>
+</div>
